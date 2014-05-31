@@ -1,0 +1,167 @@
+//
+// ミニゲーム雛形
+//
+
+#include "appEnv.hpp"
+
+
+// アプリのウインドウサイズ
+enum Window {
+	WIDTH = 800,
+	HEIGHT = 950
+};
+
+// 
+// メインプログラム
+// 
+int main() {
+	// アプリウインドウの準備
+	AppEnv app_env(Window::WIDTH, Window::HEIGHT);
+	app_env.bgColor(Color(1, 1, 1));
+	// タイトル画面
+	Texture title_S("res/title_S.png");
+	Texture title_T1("res/title_T(1).png");
+	Texture title_A("res/title_A.png");
+	Texture title_R("res/title_R.png");
+	Texture title_T2("res/title_T(2).png");
+
+	Texture title_E("res/title_E.png");
+	Texture title_X("res/title_X.png");
+	Texture title_I("res/title_I.png");
+	Texture title_T3("res/title_T(3).png");
+
+	Texture HP_("res/HP.png");
+
+	float s = 0;
+	float t = 0.4;
+	float a = 0.8;
+	float r = 1.2;
+	float t2 = 1.6;
+
+	float e = 1.0;
+	float x = 1.6;
+	float i = 2.0;
+	float t3 = 2.4;
+
+	float Hp = 1.0;
+
+	float move = 0;
+	float gun = 0;
+
+	// メインループ
+	while (1) {
+
+		// ウィンドウが閉じられたらアプリを終了
+		if (!app_env.isOpen()) return 0;
+
+		// 描画準備
+		app_env.setupDraw();
+
+		// STARTロゴ
+		s = s + 0.025;
+		drawTextureBox(-380, std::sin(s) * 20 + 200, 128, 128,
+			0, 0, 128, 128,
+			title_S,
+			Color(1, 1, 1));
+
+		t = t + 0.025;
+		drawTextureBox(-300, std::sin(t) * 20 + 230, 128, 128,
+			0, 0, 128, 128,
+			title_T1,
+			Color(1, 1, 1));
+
+		a = a + 0.025;
+		drawTextureBox(-230, std::sin(a) * 20 + 190, 128, 128,
+			0, 0, 128, 128,
+			title_A,
+			Color(1, 1, 1));
+
+		r = r + 0.025;
+		drawTextureBox(-135, std::sin(r) * 20 + 215, 128, 128,
+			0, 0, 128, 128,
+			title_R,
+			Color(1, 1, 1));
+
+		t2 = t2 + 0.025;
+		drawTextureBox(-40, std::sin(t2) * 20 + 180, 128, 128,
+			0, 0, 128, 128,
+			title_T2,
+			Color(1, 1, 1));
+
+		// EXITロゴ
+		e = e + 0.025;
+		drawTextureBox(110, std::sin(e) * 20 + 50, 110, 110,
+			0, 0, 128, 128,
+			title_E,
+			Color(1, 1, 1));
+
+		x = x + 0.025;
+		drawTextureBox(190, std::sin(x) * 20 + 45, 70, 60,
+			0, 0, 128, 128,
+			title_X,
+			Color(1, 1, 1));
+
+		i = i + 0.025;
+		drawTextureBox(230, std::sin(i) * 20 + 45, 70, 70,
+			0, 0, 128, 128,
+			title_I,
+			Color(1, 1, 1));
+
+		t3 = t3 + 0.025;
+		drawTextureBox(260, std::sin(t3) * 20 + 45, 80, 80,
+			0, 0, 128, 128,
+			title_T3,
+			Color(1, 1, 1));
+
+		// 自機
+		if (app_env.isPressKey('A')){
+			move += 2;
+		}
+		if (app_env.isPressKey('D')){
+			move -= 2;
+		}
+		if (move >= (400 - 38)){
+			move -= 2;
+		}
+		if (move <= (-400 + 38)){
+			move += 2;
+		}
+		drawFillCircle(0 - move, -400, 40, 40,
+			3,
+			Color(1.2, 0.4, 1.7));
+
+
+		// レーザーの発射
+		if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+			drawLine(0 - move, -360 - gun, 0 - move, 480 - gun,
+				10,
+				Color(1, 0, 0.6));
+			if (move < 400) {
+				if (move > -75) {
+					
+				}
+			}
+			if (move < -135) {
+				if (move > -330) {
+					
+				}
+			}
+		}
+
+		Hp = Hp + 0.025;
+		drawTextureBox(-170, std::sin(Hp)*20+350, 256, 128,
+			0, 0,
+			256, 128,
+			HP_,
+			Color(1, 1, 1));
+		
+		//
+		// ここにゲームの処理を書く
+		// 
+
+		// 画面を更新
+		app_env.update();
+	}
+
+	// アプリ終了
+}
