@@ -30,7 +30,12 @@ int main() {
 	Texture title_I("res/title_I.png");
 	Texture title_T3("res/title_T(3).png");
 
-	Texture HP_("res/HP.png");
+	// プレイ画面素材
+	Texture syobon("res/syobon.png");
+	Texture sonna("res/sonna.png");
+	Texture ranran("res/ranran.png");
+	Texture syakin("res/syaki-n.png");
+	Texture syakin2("res/syakin.png");
 
 	float s = 0;
 	float t = 0.4;
@@ -43,10 +48,13 @@ int main() {
 	float i = 2.0;
 	float t3 = 2.4;
 
-	float Hp = 1.0;
 
 	float move = 0;
 	float gun = 0;
+
+	int START_time = 60 * 15;
+	int EXIT_time = 60 * 15;
+
 
 	// メインループ
 	while (1) {
@@ -115,16 +123,16 @@ int main() {
 
 		// 自機
 		if (app_env.isPressKey('A')){
-			move += 2;
+			move += 5;
 		}
 		if (app_env.isPressKey('D')){
-			move -= 2;
+			move -= 5;
 		}
 		if (move >= (400 - 38)){
-			move -= 2;
+			move -= 5;
 		}
 		if (move <= (-400 + 38)){
-			move += 2;
+			move += 5;
 		}
 		drawFillCircle(0 - move, -400, 40, 40,
 			3,
@@ -136,25 +144,42 @@ int main() {
 			drawLine(0 - move, -360 - gun, 0 - move, 480 - gun,
 				10,
 				Color(1, 0, 0.6));
+			//　あたり判定
 			if (move < 400) {
 				if (move > -75) {
-					
+
+					// ＨＰバーの表示
+					float START_bar = -400;
+					float START_y = -Window::HEIGHT / 2 + 940;
+
+					// 表示サイズ
+					float width = (START_time * 800) / (60 * 15);
+					float height = 15;
+
+					//　HPバーを矩形で表示
+					drawFillBox(START_bar, START_y, width, height, Color(1, 0, 0));
+					// プレイタイムを減らす
+					START_time -= 6;
 				}
 			}
 			if (move < -135) {
 				if (move > -330) {
-					
+					// ＨＰバーの表示
+					float EXIT_bar = -400;
+					float EXIT_y = -Window::HEIGHT / 2 + 940;
+
+					// 表示サイズ
+					float width = (EXIT_time * 800) / (60 * 15);
+					float height = 15;
+					// HPバーを矩形で表示
+					drawFillBox(EXIT_bar, EXIT_y, width, height, Color(1, 0, 0));
+					// プレイタイムを減らす
+					EXIT_time -= 3;
 				}
 			}
+			// プレイタイムが０になったら次へ
+			if (START_time == 0) break;
 		}
-
-		Hp = Hp + 0.025;
-		drawTextureBox(-170, std::sin(Hp)*20+350, 256, 128,
-			0, 0,
-			256, 128,
-			HP_,
-			Color(1, 1, 1));
-		
 		//
 		// ここにゲームの処理を書く
 		// 
@@ -163,5 +188,290 @@ int main() {
 		app_env.update();
 	}
 
-	// アプリ終了
+	float totu_time = 0;
+
+	int syobon1_HP = 60 * 15;
+	int syobon2_HP = 60 * 15;
+	int syobon3_HP = 60 * 15;
+	int syobon4_HP = 60 * 15;
+
+	float syobonUP1 = 0;
+	float syobonUP2 = 0;
+	float syobonUP3 = 0;
+	float syobonUP4 = 0;
+
+
+	// メインループ
+	while (1) {
+		// ウインドウが閉じられたら終了
+		if (!app_env.isOpen()) return 0;
+
+		// 描画準備
+		app_env.setupDraw();
+
+		// ゲーム本編
+
+		//
+		// (´・ω・｀)一体目
+		//
+
+		totu_time += 0.01;
+
+		if (totu_time >= 1) {
+			if (totu_time <= 3) {
+				if (syobon1_HP > 0){
+					drawTextureBox(0, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon1_HP > 0) {
+					drawTextureBox(0, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < -15) {
+					if (move > -240) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon1_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon1_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon1_HP <= 0){
+			syobonUP1 += 1;
+		}
+		if (syobon1_HP <= 0){
+			drawTextureBox(0, 350 + syobonUP1, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon1_HP <= 0) {
+			drawTextureBox(0, 300 + syobonUP1, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)二体目
+		//
+
+		if (totu_time >= 3) {
+			if (totu_time <= 6) {
+				if (syobon2_HP > 0){
+					drawTextureBox(-300, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon2_HP > 0) {
+					drawTextureBox(-300, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < 280) {
+					if (move > 95) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon2_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon2_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon2_HP <= 0){
+			syobonUP2 += 1;
+		}
+		if (syobon2_HP <= 0){
+			drawTextureBox(-300, 350 + syobonUP2, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon2_HP <= 0) {
+			drawTextureBox(-300, 300 + syobonUP2, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)3体目
+		//
+
+		if (totu_time >= 5) {
+			if (totu_time <= 8.5) {
+				if (syobon3_HP > 0){
+					drawTextureBox(-150, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon3_HP > 0) {
+					drawTextureBox(-150, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < 130) {
+					if (move > -100) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon3_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon3_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon3_HP <= 0){
+			syobonUP3 += 1;
+		}
+		if (syobon3_HP <= 0){
+			drawTextureBox(-150, 350 + syobonUP3, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon3_HP <= 0) {
+			drawTextureBox(-150, 300 + syobonUP3, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)4体目
+		//
+
+		if (totu_time >= 7) {
+			if (totu_time <= 10) {
+				if (syobon4_HP > 0){
+					drawTextureBox(70, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon4_HP > 0) {
+					drawTextureBox(70, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < -85) {
+					if (move > -300) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon4_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon4_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon4_HP <= 0){
+			syobonUP4 += 1;
+		}
+		if (syobon4_HP <= 0){
+			drawTextureBox(70, 350 + syobonUP4, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon4_HP <= 0) {
+			drawTextureBox(70, 300 + syobonUP4, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		// 自機
+		if (app_env.isPressKey('A')){
+			move += 5;
+		}
+		if (app_env.isPressKey('D')){
+			move -= 5;
+		}
+		if (move >= (400 - 38)){
+			move -= 5;
+		}
+		if (move <= (-400 + 38)){
+			move += 5;
+		}
+		drawFillCircle(0 - move, -400, 40, 40,
+			3,
+			Color(1.2, 0.4, 1.7));
+
+		// レーザーの発射
+		if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+			drawLine(0 - move, -360 - gun, 0 - move, 480 - gun,
+				10,
+				Color(1, 0, 0.6));
+		}
+		// 画面を更新
+		app_env.update();
+	}
+
+
+	// ゲームを終了
 }
