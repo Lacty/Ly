@@ -36,6 +36,7 @@ int main() {
 	Texture ranran("res/ranran.png");
 	Texture syakin("res/syaki-n.png");
 	Texture syakin2("res/syakin.png");
+	Texture zanzouDA("res/zanzouDA.png");
 
 	float s = 0;
 	float t = 0.4;
@@ -188,6 +189,10 @@ int main() {
 		app_env.update();
 	}
 
+	//*******************************************************************//
+	//                         syobon HP.UP                              //
+	//*******************************************************************//
+
 	float totu_time = 0;
 
 	int syobon1_HP = 60 * 15;
@@ -241,8 +246,10 @@ int main() {
 
 		// 描画準備
 		app_env.setupDraw();
-
-		// ゲーム本編
+		
+		//*************************************************************//
+		//                       ゲーム本編                            //
+		//*************************************************************//
 
 		//
 		// (´・ω・｀)一体目
@@ -1000,7 +1007,406 @@ int main() {
 				Color(1, 1, 1));
 		}
 
-		// 自機
+		//
+		// (´・ω・｀)14体目
+		//
+
+		if (totu_time >= 18) {
+			if (totu_time <= 20.3) {
+				if (syobon14_HP > 0){
+					drawTextureBox(0, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon14_HP > 0) {
+					drawTextureBox(0, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < -15) {
+					if (move > -250) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon14_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon14_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon14_HP <= 0){
+			syobonUP14 += 1;
+		}
+		if (syobon14_HP <= 0){
+			drawTextureBox(0, 350 + syobonUP14, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon14_HP <= 0) {
+			drawTextureBox(0, 300 + syobonUP14, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)15体目
+		//
+
+		if (totu_time >= 18) {
+			if (totu_time <= 20.3) {
+				if (syobon15_HP > 0){
+					drawTextureBox(0, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon15_HP > 0) {
+					drawTextureBox(0, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < -15) {
+					if (move > -250) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon15_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon15_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon15_HP <= 0){
+			syobonUP15 += 1;
+		}
+		if (syobon15_HP <= 0){
+			drawTextureBox(0, 350 + syobonUP15, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon15_HP <= 0) {
+			drawTextureBox(0, 300 + syobonUP15, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)16体目
+		//
+
+		if (totu_time >= 19) {
+			if (totu_time <= 21.3) {
+				if (syobon16_HP > 0){
+					drawTextureBox(-340, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon16_HP > 0) {
+					drawTextureBox(-340, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < 340) {
+					if (move > 80) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon16_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon16_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon16_HP <= 0){
+			syobonUP16 += 1;
+		}
+		if (syobon16_HP <= 0){
+			drawTextureBox(-340, 350 + syobonUP16, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon16_HP <= 0) {
+			drawTextureBox(-340, 300 + syobonUP16, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)17体目
+		//
+
+		if (totu_time >= 20.3) {
+			if (totu_time <= 22.5) {
+				if (syobon17_HP > 0){
+					drawTextureBox(140, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon17_HP > 0) {
+					drawTextureBox(140, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < -155) {
+					if (move > -380) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon17_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon17_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon17_HP <= 0){
+			syobonUP17 += 1;
+		}
+		if (syobon17_HP <= 0){
+			drawTextureBox(140, 350 + syobonUP17, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon17_HP <= 0) {
+			drawTextureBox(140, 300 + syobonUP17, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)18体目
+		//
+
+		if (totu_time >= 21.5) {
+			if (totu_time <= 23.3) {
+				if (syobon18_HP > 0){
+					drawTextureBox(-100, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon18_HP > 0) {
+					drawTextureBox(-100, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < 80) {
+					if (move > -155) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon18_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon18_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon18_HP <= 0){
+			syobonUP18 += 1;
+		}
+		if (syobon18_HP <= 0){
+			drawTextureBox(-100, 350 + syobonUP18, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon18_HP <= 0) {
+			drawTextureBox(-100, 300 + syobonUP18, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)19体目
+		//
+
+		if (totu_time >= 22.6) {
+			if (totu_time <= 23.7) {
+				if (syobon19_HP > 0){
+					drawTextureBox(-100, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon19_HP > 0) {
+					drawTextureBox(-100, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < 80) {
+					if (move > -155) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon19_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon19_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon19_HP <= 0){
+			syobonUP19 += 1;
+		}
+		if (syobon19_HP <= 0){
+			drawTextureBox(-100, 350 + syobonUP19, 256, 128,
+				0, 0, 256, 128,
+				syobon,
+				Color(0, 0, 0));
+		}
+		// しょぼんを上に移動させる
+		if (syobon19_HP <= 0) {
+			drawTextureBox(-100, 300 + syobonUP19, 256, 128,
+				0, 0, 256, 128,
+				sonna,
+				Color(1, 1, 1));
+		}
+
+		//
+		// (´・ω・｀)20体目
+		//
+
+		if (totu_time >= 23.6) {
+			if (totu_time <= 35) {
+				if (syobon20_HP > 0){
+					drawTextureBox(-100, 350, 256, 128,
+						0, 0, 256, 128,
+						syakin2,
+						Color(0, 0, 0));
+				}
+				// シャキーン
+				if (syobon20_HP > 0) {
+					drawTextureBox(-100, 300, 256, 128,
+						0, 0, 256, 128,
+						syakin,
+						Color(0, 0, 0));
+				}
+				if (move < 80) {
+					if (move > -155) {
+
+						if (app_env.isPressKey(GLFW_KEY_SPACE)) {
+
+							// ＨＰバーの表示
+							float syobon1_bar = -400;
+							float syobon1_y = -Window::HEIGHT / 2 + 940;
+
+							// 表示サイズ
+							float width = (syobon20_HP * 800) / (60 * 15);
+							float height = 15;
+							// HPバーを矩形で表示
+							drawFillBox(syobon1_bar, syobon1_y, width, height, Color(1, 0, 0));
+							// プレイタイムを減らす
+							syobon20_HP -= 10;
+						}
+					}
+				}
+			}
+		}
+		// (´・ω・｀)を上に移動させる
+		if (syobon20_HP <= 0){
+			syobonUP20 += 2.5;
+		}
+		if (syobon20_HP <= 0){
+			drawTextureBox(-250 + syobonUP20, 300, 512, 256,
+				0, 0, 512, 256,
+				zanzouDA,
+				Color(0, 0, 0));
+		}
+		
+		//自機
 		if (app_env.isPressKey('A')){
 			move += 5;
 		}
