@@ -19,61 +19,86 @@ int main() {
 	AppEnv app_env(Window::WIDTH, Window::HEIGHT);
 	app_env.bgColor(Color(1, 1, 1));
 	while (1){
-		
-		
+
+
 		// 「てってってー」の準備
 		Media TETE("res/TETE.wav");
-        
+
 		//　「てってってー」ループ再生
 		TETE.play();
+		TETE.gain(0.5);
 		TETE.looping(true);
 
 		// レーザー音の準備
 		Media Laser("res/LASER.wav");
 
 
-	// タイトル画面
-	Texture Title("res/Title.png");
+		// タイトル画面
+		Texture Title("res/Title.png");
 
-	Texture title_S("res/title_S.png");
-	Texture title_T1("res/title_T(1).png");
-	Texture title_A("res/title_A.png");
-	Texture title_R("res/title_R.png");
-	Texture title_T2("res/title_T(2).png");
+		Texture title_S("res/title_S.png");
+		Texture title_T1("res/title_T(1).png");
+		Texture title_A("res/title_A.png");
+		Texture title_R("res/title_R.png");
+		Texture title_T2("res/title_T(2).png");
 
-	Texture title_E("res/title_E.png");
-	Texture title_X("res/title_X.png");
-	Texture title_I("res/title_I.png");
-	Texture title_T3("res/title_T(3).png");
+		Texture title_E("res/title_E.png");
+		Texture title_X("res/title_X.png");
+		Texture title_I("res/title_I.png");
+		Texture title_T3("res/title_T(3).png");
 
-	Texture syuuryou("res/syuuryou.png");
-	// プレイ画面素材
-	Texture syobon("res/syobon.png");
-	Texture sonna("res/sonna.png");
-	Texture ranran("res/ranran.png");
-	Texture syakin("res/syaki-n.png");
-	Texture syakin2("res/syakin.png");
-	Texture zanzouDA("res/zanzouDA.png");
+		Texture syuuryou("res/syuuryou.png");
 
-	float s = 0;
-	float t = 0.4;
-	float a = 0.8;
-	float r = 1.2;
-	float t2 = 1.6;
+		Texture Setumei("res/Setumei.png");
+		Texture Setumei2("res/Setumei2.png");
+		// プレイ画面素材
+		Texture syobon("res/syobon.png");
+		Texture sonna("res/sonna.png");
+		Texture ranran("res/ranran.png");
+		Texture syakin("res/syaki-n.png");
+		Texture syakin2("res/syakin.png");
+		Texture zanzouDA("res/zanzouDA.png");
 
-	float e = 1.0;
-	float x = 1.6;
-	float i = 2.0;
-	float t3 = 2.4;
+		Texture gekiha("res/gekiha.png");
+
+		Texture point1("res/1.png");
+		Texture point2("res/2.png");
+		Texture point3("res/3.png");
+		Texture point4("res/4.png");
+		Texture point5("res/5.png");
+		Texture point6("res/6.png");
+		Texture point7("res/7.png");
+		Texture point8("res/8.png");
+		Texture point9("res/9.png");
+		Texture point10("res/10.png");
+		Texture point11("res/11.png");
+		Texture point12("res/12.png");
+		Texture point13("res/13.png");
+		Texture point14("res/14.png");
+		Texture point15("res/15.png");
+		Texture point16("res/16.png");
+		Texture point17("res/17.png");
+		Texture point18("res/18.png");
+		Texture point19("res/19.png");
+		Texture point20("res/20.png");
+
+		float s = 0;
+		float t = 0.4;
+		float a = 0.8;
+		float r = 1.2;
+		float t2 = 1.6;
+
+		float e = 1.0;
+		float x = 1.6;
+		float i = 2.0;
+		float t3 = 2.4;
 
 
-	float move = 0;
-	float gun = 0;
+		float move = 0;
+		float gun = 0;
 
-	int START_time = 60 * 15;
-	int EXIT_time = 60 * 15;
-	
-
+		int START_time = 60 * 15;
+		int EXIT_time = 60 * 15;
 		// メインループ
 		while (1) {
 
@@ -82,6 +107,22 @@ int main() {
 
 			// 描画準備
 			app_env.setupDraw();
+
+			// レーザー音
+			if (app_env.isPushKey(GLFW_KEY_SPACE)) {
+				Laser.play();
+				Laser.looping(true);
+			}
+
+			if (app_env.isPullKey(GLFW_KEY_SPACE)) {
+				Laser.pause();
+			}
+
+			//　説明
+			drawTextureBox(-256, -300, 512, 128,
+				0, 0, 512, 128,
+				Setumei,
+				Color(1, 1, 1));
 
 			// 豚のシューティング
 			drawTextureBox(-256, 300, 512, 256,
@@ -165,20 +206,11 @@ int main() {
 
 			// レーザーの発射
 			if (app_env.isPressKey(GLFW_KEY_SPACE)) {
-				// Laserの再生
-				Laser.play();
-				
-				// ループ再生を開始
-				Laser.looping(true);
-				
-				//　ボタンが離されたらループ再生を解除
-				if (app_env.isPullKey(GLFW_KEY_SPACE));
-				Laser.looping(false);
-				
-				
 				drawLine(0 - move, -360 - gun, 0 - move, 480 - gun,
 					10,
 					Color(1, 0, 0.6));
+
+
 				//　あたり判定
 				if (move < 400) {
 					if (move > -75) {
@@ -221,6 +253,9 @@ int main() {
 					syuuryou,
 					Color(1, 1, 1));
 			}
+
+
+
 			//
 			// ここにゲームの処理を書く
 			// 
@@ -278,6 +313,9 @@ int main() {
 		float syobonUP19 = 0;
 		float syobonUP20 = 0;
 
+		int tokuten = 0;
+
+		
 
 		// メインループ
 		while (1) {
@@ -290,12 +328,149 @@ int main() {
 			//*************************************************************//
 			//                       ゲーム本編                            //
 			//*************************************************************//
+			// 画像、撃破数表示
+			drawTextureBox(-330, -300, 64, 64,
+				0, 0, 64, 64,
+				gekiha,
+				Color(1, 1, 1));
+
+			// 得点表示 1-20
+				if (tokuten == 1) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point1,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 2) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point2,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 3) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point3,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 4) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point4,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 5) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point5,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 6) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point6,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 7) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point7,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 8) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point8,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 9) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point9,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 10) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point10,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 11) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point11,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 12) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point12,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 13) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point13,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 14) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point14,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 15) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point15,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 16) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point16,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 17) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point17,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 18) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point18,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 19) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point19,
+						Color(0, 0, 0));
+				}
+				if (tokuten == 20) {
+					drawTextureBox(-330, -350, 64, 64,
+						0, 0, 64, 64,
+						point20,
+						Color(0, 0, 0));
+				}
+			// 凸Ｔｉｍｅ増加
+			totu_time += 0.01;
+
+			// 説明２表示　(´・ω・｀)を倒せ！
+			if (totu_time > 0) {
+				if (totu_time < 3){
+					drawTextureBox(-128, -300, 256, 128,
+						0, 0, 256, 128,
+						Setumei2,
+						Color(1, 1, 1));
+				}
+			}
 
 			//
 			// (´・ω・｀)一体目
 			//
-
-			totu_time += 0.01;
 
 			if (totu_time >= 1) {
 				if (totu_time <= 3) {
@@ -349,6 +524,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon1_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -408,6 +587,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon2_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)3体目
@@ -465,6 +648,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon3_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -524,6 +711,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon4_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)5体目
@@ -581,6 +772,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon5_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -640,6 +835,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon6_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)7体目
@@ -697,6 +896,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon7_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -756,6 +959,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon8_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)9体目
@@ -813,6 +1020,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon9_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -872,6 +1083,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon10_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)11体目
@@ -929,6 +1144,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon11_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -988,6 +1207,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon12_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)13体目
@@ -1045,6 +1268,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon13_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -1104,6 +1331,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon14_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)15体目
@@ -1161,6 +1392,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon15_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -1220,6 +1455,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon16_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)17体目
@@ -1277,6 +1516,10 @@ int main() {
 					0, 0, 256, 128,
 					sonna,
 					Color(1, 1, 1));
+			}
+			// 得点を＋させる
+			if (syobon17_HP == 0) {
+				tokuten += 1;
 			}
 
 			//
@@ -1336,6 +1579,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon18_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)19体目
@@ -1394,6 +1641,10 @@ int main() {
 					sonna,
 					Color(1, 1, 1));
 			}
+			// 得点を＋させる
+			if (syobon19_HP == 0) {
+				tokuten += 1;
+			}
 
 			//
 			// (´・ω・｀)20体目
@@ -1446,7 +1697,6 @@ int main() {
 					Color(0, 0, 0));
 			}
 
-
 			//自機
 			if (app_env.isPressKey('A')){
 				move += 5;
@@ -1464,23 +1714,23 @@ int main() {
 				3,
 				Color(1.2, 0.4, 1.7));
 
+			// レーザー音
+			if (app_env.isPushKey(GLFW_KEY_SPACE)) {
+				Laser.play();
+				Laser.looping(true);
+			}
+
+			if (app_env.isPullKey(GLFW_KEY_SPACE)) {
+				Laser.pause();
+			}
+
 			// レーザーの発射
 			if (app_env.isPressKey(GLFW_KEY_SPACE)) {
-				/*
-				// Laserの再生
-				Laser.play();
-				// ループ再生を開始
-				Laser.looping(true);
-
-				//　ボタンが離されたらループ再生を解除
-				if (app_env.isPullKey(GLFW_KEY_SPACE));
-				Laser.looping(false);
-				*/
 				drawLine(0 - move, -360 - gun, 0 - move, 480 - gun,
 					10,
 					Color(1, 0, 0.6));
 			}
-			if (totu_time >= 27) { break; }
+			if (totu_time >= 28) { break; }
 			// 画面を更新
 			app_env.update();
 		}
