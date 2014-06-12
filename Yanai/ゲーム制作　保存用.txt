@@ -32,7 +32,6 @@ int main() {
 		// レーザー音の準備
 		Media Laser("res/LASER.wav");
 
-
 		// タイトル画面
 		Texture Title("res/Title.png");
 
@@ -51,6 +50,7 @@ int main() {
 
 		Texture Setumei("res/Setumei.png");
 		Texture Setumei2("res/Setumei2.png");
+
 		// プレイ画面素材
 		Texture syobon("res/syobon.png");
 		Texture sonna("res/sonna.png");
@@ -59,8 +59,10 @@ int main() {
 		Texture syakin2("res/syakin.png");
 		Texture zanzouDA("res/zanzouDA.png");
 
+		// 撃破数の表示
 		Texture gekiha("res/gekiha.png");
 
+		// ポイント表示
 		Texture point1("res/1.png");
 		Texture point2("res/2.png");
 		Texture point3("res/3.png");
@@ -99,6 +101,7 @@ int main() {
 
 		int START_time = 60 * 15;
 		int EXIT_time = 60 * 15;
+
 		// メインループ
 		while (1) {
 
@@ -188,27 +191,27 @@ int main() {
 
 			// 自機
 			if (app_env.isPressKey('A')){
-				move += 5;
+				move += 6;
 			}
 			if (app_env.isPressKey('D')){
-				move -= 5;
+				move -= 6;
 			}
 			if (move >= (400 - 38)){
-				move -= 5;
+				move -= 6;
 			}
 			if (move <= (-400 + 38)){
-				move += 5;
+				move += 6;
 			}
 			drawFillCircle(0 - move, -400, 40, 40,
 				3,
-				Color(1.2, 0.4, 1.7));
+				Color(0, 2.55, 2.04));
 
 
 			// レーザーの発射
 			if (app_env.isPressKey(GLFW_KEY_SPACE)) {
 				drawLine(0 - move, -360 - gun, 0 - move, 480 - gun,
 					10,
-					Color(1, 0, 0.6));
+					Color(0.25, 1, 0.3));
 
 
 				//　あたり判定
@@ -243,7 +246,7 @@ int main() {
 						// HPバーを矩形で表示
 						drawFillBox(EXIT_bar, EXIT_y, width, height, Color(1, 0, 0));
 						// プレイタイムを減らす
-						EXIT_time -= 3;
+						EXIT_time -= 5;
 					}
 				}
 			}
@@ -265,7 +268,7 @@ int main() {
 		}
 
 		//*******************************************************************//
-		//                 totu time         syobon HP.UP                    //
+		//          totu time         syobon HP.UP         tokuten           //
 		//*******************************************************************//
 
 		float totu_time = 0;
@@ -315,7 +318,8 @@ int main() {
 
 		int tokuten = 0;
 
-		
+		// プレイ時間(15秒)
+		float play_time = 60 * 15;
 
 		// メインループ
 		while (1) {
@@ -335,128 +339,147 @@ int main() {
 				Color(1, 1, 1));
 
 			// 得点表示 1-20
-				if (tokuten == 1) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point1,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 2) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point2,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 3) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point3,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 4) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point4,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 5) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point5,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 6) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point6,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 7) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point7,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 8) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point8,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 9) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point9,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 10) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point10,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 11) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point11,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 12) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point12,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 13) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point13,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 14) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point14,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 15) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point15,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 16) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point16,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 17) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point17,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 18) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point18,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 19) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point19,
-						Color(0, 0, 0));
-				}
-				if (tokuten == 20) {
-					drawTextureBox(-330, -350, 64, 64,
-						0, 0, 64, 64,
-						point20,
-						Color(0, 0, 0));
-				}
+			if (tokuten == 1) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point1,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 2) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point2,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 3) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point3,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 4) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point4,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 5) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point5,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 6) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point6,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 7) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point7,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 8) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point8,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 9) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point9,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 10) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point10,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 11) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point11,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 12) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point12,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 13) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point13,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 14) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point14,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 15) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point15,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 16) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point16,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 17) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point17,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 18) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point18,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 19) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point19,
+					Color(0, 0, 0));
+			}
+			if (tokuten == 20) {
+				drawTextureBox(-330, -350, 64, 64,
+					0, 0, 64, 64,
+					point20,
+					Color(0, 0, 0));
+			}
 			// 凸Ｔｉｍｅ増加
 			totu_time += 0.01;
+
+			// 残り時間表示
+			{
+				// 表示位置
+				float x = -400;
+				float y = -Window::HEIGHT / 2 + 50;
+
+				// 表示サイズ(残り時間を矩形の横幅で表現)
+				float width = (play_time * 200) / (60 * 15);
+				float height = 30;
+
+				// 残り時間を矩形で表示
+				drawFillBox(x, y, width, height, Color(0, 0.5, 0.8));
+				// 枠線
+				drawBox(x, y, 200, height, 2, Color(1, 1, 1));
+
+				// 残り時間減少
+				play_time -= 0.32;
+			}
 
 			// 説明２表示　(´・ω・｀)を倒せ！
 			if (totu_time > 0) {
@@ -1699,20 +1722,20 @@ int main() {
 
 			//自機
 			if (app_env.isPressKey('A')){
-				move += 5;
+				move += 6;
 			}
 			if (app_env.isPressKey('D')){
-				move -= 5;
+				move -= 6;
 			}
 			if (move >= (400 - 38)){
-				move -= 5;
+				move -= 6;
 			}
 			if (move <= (-400 + 38)){
-				move += 5;
+				move += 6;
 			}
 			drawFillCircle(0 - move, -400, 40, 40,
 				3,
-				Color(1.2, 0.4, 1.7));
+				Color(0, 2.55 , 2.04));
 
 			// レーザー音
 			if (app_env.isPushKey(GLFW_KEY_SPACE)) {
@@ -1728,7 +1751,7 @@ int main() {
 			if (app_env.isPressKey(GLFW_KEY_SPACE)) {
 				drawLine(0 - move, -360 - gun, 0 - move, 480 - gun,
 					10,
-					Color(1, 0, 0.6));
+					Color(0.25, 1, 0.3));
 			}
 			if (totu_time >= 28) { break; }
 			// 画面を更新
@@ -1736,6 +1759,5 @@ int main() {
 		}
 		// 得点画面作成↓
 	}
-
 	// ゲームを終了
 }
