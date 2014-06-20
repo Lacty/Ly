@@ -6,5 +6,5 @@ void draw() {
    background(100, 100, 100);
    fill(-1);
    textSize(200);
-   text("Ly", 50, 180);
+   text("Ly", width / 2 - 100, height / 2 + 50);
 }
