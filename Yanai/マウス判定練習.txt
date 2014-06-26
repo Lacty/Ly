@@ -1,0 +1,63 @@
+//
+// ミニゲーム雛形
+//
+
+#include "appEnv.hpp"
+
+
+// アプリのウインドウサイズ
+enum Window {
+  WIDTH  = 512,
+  HEIGHT = 512
+};
+
+bool mouse(Vec2f mouse_pos, float x, float y,
+	float width, float height){
+	if (mouse_pos.x() > x - 10) {
+		if (mouse_pos.x() < (x + width + 10)){
+			if (mouse_pos.y() > y - 10){
+				if (mouse_pos.y() < (y + height + 10)){
+				// 矩形の中にあるのでtrueを返す
+					return true;
+				}
+			}
+		}
+	}
+    // 矩形の外なのでfalseを返す
+	return false;
+}
+
+float x = 0;
+float y = 0;
+
+
+// 
+// メインプログラム
+// 
+int main() {
+  // アプリウインドウの準備
+  AppEnv app_env(Window::WIDTH, Window::HEIGHT);
+  app_env.bgColor(Color(1, 1, 1));
+
+  // メインループ
+  while (1) {
+    // ウィンドウが閉じられたらアプリを終了
+    if (!app_env.isOpen()) return 0;
+
+    // 描画準備
+    app_env.setupDraw();
+    
+	Vec2f mouse_pos = app_env.mousePosition();
+	drawFillBox(0, 0, 100, 100, Color(1, 0, mouse(mouse_pos, 0, 0, 100, 100)));
+	drawFillBox(mouse_pos.x() - 10, mouse_pos.y() - 10, 20, 20, Color(0, 0, 0));
+
+    //
+    // ここにゲームの処理を書く
+    // 
+    
+    // 画面を更新
+    app_env.update();
+  }
+
+  // アプリ終了
+}
