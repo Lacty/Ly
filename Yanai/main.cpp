@@ -508,7 +508,7 @@ int main() {
 		}
 
 		// 影
-		drawTextureBox(P_x, P_y - 10, 256-128, 128-64,
+		drawTextureBox(P_x, -210, 256-128, 128-64,
 			0, 0, 256, 128,
 			kage,
 			Color(1, 1, 1));
@@ -529,13 +529,14 @@ int main() {
 					Color(1, 1, 1));
 			}
 		
-
+		// 地面
 		drawLine(-800, -200, -500, -200, 5, Color(0, 0, 0));
 		drawLine(-400, -200, 800, -200, 5, Color(0, 0, 0));
 
 		drawLine(-200, -200, -200, -190, 5, Color(hole, 1, 0));
 		drawLine(-500, -200, -400, -200, 5, Color(hole, 1, 0));
 
+		//スイッチ
 		if ((P_x > -328) && (P_x < -200)){
 			if (hole){
 				if (app_env.isPushKey(GLFW_KEY_ENTER)){
@@ -549,19 +550,30 @@ int main() {
 			}
 		}
 
-		if ((P_x > -564) && (P_x < -464)){
-			if (hole){ gravity = true; }
+
+		//重力制御
+		if (hole){
+			if ((P_y < -200)&&(P_y > -201) && (P_x > -464)){
+				is_Jump = true;
+				vy = 0;
+			}
+			else if ((P_x < -564) && (P_y < -200) && (P_y > -201)){
+				is_Jump = true;
+				vy = 0;
+			}
+			else { is_Jump = false; }
+		}
+		else {
+			if (P_y < -200){
+				is_Jump = true;
+				vy = 0;
+			}
+			else { is_Jump = false; }
 		}
 
-
-		if (P_y < -200){
-			is_Jump = true;
-			vy = 0;
-		}
-		else { is_Jump = false; }
-
+		//ジャンプしたときの初速
 		if (is_Jump){
-			if (app_env.isPushKey(GLFW_KEY_SPACE)){ vy = -5; }
+			if (app_env.isPushKey(GLFW_KEY_SPACE)){ vy = -3; }
 		}
 
 		drawCircle(E_x, E_y, 12, 12, 4, 3, Color(0, 0, 0));
