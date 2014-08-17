@@ -480,12 +480,29 @@ int main() {
 	float g  = 0.1;
 
 	bool gravity = false;
-	bool hole = false;
 	bool is_Jump = false;
 
-	P_x = 0;
-	float E_x = 0;
-	float E_y = -180;
+	P_x = -750;
+
+	bool Ya = false;
+	float Ya_y = 0;
+	float Ya_vy = 10;
+	float Ya_g = 0.18;
+
+	float B_x = -800;
+	float B_y = -250;
+	float block_x = 50;
+
+	bool is_Ly = false;
+	float ly_x = 800;
+
+	Texture tree("res/tree.png");
+	Texture ya("res/ya.png");
+	Texture block("res/block.png");
+	Texture dokan("res/dokan.png");
+	Texture ly("res/Ly.png");
+
+	right = true;
 	
 	while (1) {
 		// アプリウインドウが閉じられたらプログラムを終了
@@ -508,75 +525,181 @@ int main() {
 		}
 
 		// 影
-		drawTextureBox(P_x, -210, 256-128, 128-64,
-			0, 0, 256, 128,
-			kage,
-			Color(1, 1, 1));
+		if (is_Jump){
+			drawTextureBox(P_x, P_y - 5, 256 - 128, 128 - 64,
+				0, 0, 256, 128,
+				kage,
+				Color(1, 1, 1));
+		}
 
 		// sinの振れ
 		// 左右向いた時の画像切り替え
 		move += 0.05;
-			if (right){
-				drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2-128, P_y2-64,
-					0, 0, 256, 128,
-					pork_R,
-					Color(1, 1, 1));
-			}
-			else {
-				drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2-128, P_y2-64,
-					0, 0, 256, 128,
-					pork_L,
-					Color(1, 1, 1));
-			}
+		if (right){
+			drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2-128, P_y2-64,
+				0, 0, 256, 128,
+				pork_R,
+				Color(1, 1, 1));
+		}
+		else {
+			drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2-128, P_y2-64,
+				0, 0, 256, 128,
+				pork_L,
+				Color(1, 1, 1));
+		}
+
+		//　木
+		drawTextureBox(-550, -215, 256-64, 512-128,
+			0, 0, 256, 512,
+			tree,
+			Color(1, 1, 1));
+
+		// 矢
+		if (P_x >= -580){ Ya = true; }
+		if (Ya){ Ya_y -= Ya_vy; Ya_vy += Ya_g; }
+		if (Ya_y < -220){ Ya_vy = 0; }
+		if (Ya){
+			drawTextureBox(-530, Ya_y, 64, 128,
+				0, 0, 128, 256,
+				ya,
+				Color(1, 1, 1));
+			drawTextureBox(-510, Ya_y, 64, 128,
+				0, 0, 128, 256,
+				ya,
+				Color(1, 1, 1));
+			drawTextureBox(-470, Ya_y, 64, 128,
+				0, 0, 128, 256,
+				ya,
+				Color(1, 1, 1));
+		}
+
+		// 階段
+		drawTextureBox(B_x + 10*block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 11*block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 11*block_x, B_y + 100, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 12*block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 12*block_x, B_y + 100, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 12*block_x, B_y + 150, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+
+		// block 1列目
+		if ((P_x == -400)&&(P_y < -150)){ P_x -= 2; }
+		if ((P_x > -401) && (P_x < -349) && (P_y <= -150)){ vy = 0; }
+		if ((P_x > -401) && (P_x < -349) && (P_y <= -149)){ is_Jump = true; }
+		if ((P_x > -401) && (P_x < -349) && (P_y > -150)){ is_Jump = false; }
+		// block 2列目
+		if ((P_x == -350) && (P_y < -100)){ P_x -= 2; }
+		if ((P_x > -351) && (P_x < -299) && (P_y < -100)){ vy = 0; }
+		if ((P_x > -351) && (P_x < -299) && (P_y <= -99)){ is_Jump = true; }
+		if ((P_x > -351) && (P_x < -299) && (P_y > -100)){ is_Jump = false; }
+		// block 3列目
+		if ((P_x == -300) && (P_y < -50)){ P_x -= 2; }
+		if ((P_x > -301) && (P_x < -200) && (P_y < -50)){ vy = 0; }
+		if ((P_x > -301) && (P_x < -200) && (P_y <= -49)){ is_Jump = true; }
+		if ((P_x > -301) && (P_x < -200) && (P_y > -50)){ is_Jump = false; }
+		if ((P_x == -200) && (P_y < -50)){ P_x += 2; }
+
+
+		// とんでくるLy
+		if ((P_x > -301) && (P_x < -200) && (P_y > -50)){ is_Ly = true; }
+		if (is_Ly){
+			ly_x -= 25;
+			drawTextureBox(ly_x, -30, 128, 64, 0, 0, 128, 64, ly, Color(1, 1, 1));
+		}
+
+		// どかん
+		drawTextureBox(-55, -220, 128, 256, 0, 0, 128, 256, dokan, Color(1, 1, 1));
+		if ((P_x == -120) && (P_y < -70)){ P_x -= 2; }
+		if ((P_x > -121) && (P_x < -10) && (P_y < -70)){ vy = 0; }
+		if ((P_x > -121) && (P_x < -10) && (P_y <= -69)){ is_Jump = true; }
+		if ((P_x > -121) && (P_x < -10) && (P_y > -70)){ is_Jump = false; }
+		if ((P_x > -200)&&(P_x < -120) && (P_y <= -200)){ vy = 0; }
+
 		
 		// 地面
-		drawLine(-800, -200, -500, -200, 5, Color(0, 0, 0));
-		drawLine(-400, -200, 800, -200, 5, Color(0, 0, 0));
-
-		drawLine(-200, -200, -200, -190, 5, Color(hole, 1, 0));
-		drawLine(-500, -200, -400, -200, 5, Color(hole, 1, 0));
-
-		//スイッチ
-		if ((P_x > -328) && (P_x < -200)){
-			if (hole){
-				if (app_env.isPushKey(GLFW_KEY_ENTER)){
-					app_env.flushInput();
-					hole = false;
-				}
-			}
-			else if (app_env.isPushKey(GLFW_KEY_ENTER)){
-				app_env.flushInput();
-				hole = true;
-			}
-		}
+		drawTextureBox(B_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 2 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 3 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 4 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 5 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 6 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 7 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 8 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 9 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 10 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 11 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 12 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 13 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 14 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 15 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 16 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 17 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 18 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 19 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 20 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 21 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 22 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 23 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 24 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 25 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 26 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 27 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 28 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 29 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 30 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
+		drawTextureBox(B_x + 31 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+			block, Color(1, 1, 1));
 
 
 		//重力制御
-		if (hole){
-			if ((P_y < -200)&&(P_y > -201) && (P_x > -464)){
-				is_Jump = true;
-				vy = 0;
-			}
-			else if ((P_x < -564) && (P_y < -200) && (P_y > -201)){
-				is_Jump = true;
-				vy = 0;
-			}
-			else { is_Jump = false; }
+		if ((P_y < -200)&&(P_y > -205)&&(P_x < -400)){
+			is_Jump = true;
+			vy = 0;
 		}
-		else {
-			if (P_y < -200){
-				is_Jump = true;
-				vy = 0;
-			}
-			else { is_Jump = false; }
-		}
+		else if (P_x < -400){ is_Jump = false; }
 
 		//ジャンプしたときの初速
 		if (is_Jump){
-			if (app_env.isPushKey(GLFW_KEY_SPACE)){ vy = -3; }
+			if (app_env.isPushKey(GLFW_KEY_SPACE)){ vy = -3.5; }
 		}
 
-		drawCircle(E_x, E_y, 12, 12, 4, 3, Color(0, 0, 0));
 
 
 		//
