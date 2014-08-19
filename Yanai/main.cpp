@@ -493,6 +493,12 @@ int main() {
 	float B_y = -250;
 	float block_x = 50;
 
+	bool is_Punch = false;
+
+	float bun_move1 = 0;
+	float bun_move2 = 0;
+	float bun_move3 = 0;
+
 	bool is_Ly = false;
 	float ly_x = 800;
 
@@ -501,6 +507,8 @@ int main() {
 	Texture block("res/block.png");
 	Texture dokan("res/dokan.png");
 	Texture ly("res/Ly.png");
+	Texture bun("res/bu-n.png");
+	Texture don("res/don.png");
 
 	right = true;
 	
@@ -608,17 +616,32 @@ int main() {
 		// とんでくるLy
 		if ((P_x > -301) && (P_x < -200) && (P_y > -50)){ is_Ly = true; }
 		if (is_Ly){
-			ly_x -= 25;
-			drawTextureBox(ly_x, -30, 128, 64, 0, 0, 128, 64, ly, Color(1, 1, 1));
+			if (ly_x <= -900){ is_Ly = false; }
+				ly_x -= 25;
+				drawTextureBox(ly_x, -30, 128, 64, 0, 0, 128, 64, ly, Color(1, 1, 1));
 		}
 
 		// どかん
 		drawTextureBox(-55, -220, 128, 256, 0, 0, 128, 256, dokan, Color(1, 1, 1));
 		if ((P_x == -120) && (P_y < -70)){ P_x -= 2; }
-		if ((P_x > -121) && (P_x < -10) && (P_y < -70)){ vy = 0; }
+		if ((P_x > -121) && (P_x < -10) && (P_y < -70)){ 
+			vy = 0; 
+			P_y = -70; 
+			if (app_env.isPushKey('S')){ is_Punch = true; }
+			// Sを押したときパンチをtrueにする
+		}
 		if ((P_x > -121) && (P_x < -10) && (P_y <= -69)){ is_Jump = true; }
 		if ((P_x > -121) && (P_x < -10) && (P_y > -70)){ is_Jump = false; }
-		if ((P_x > -200)&&(P_x < -120) && (P_y <= -200)){ vy = 0; }
+		if ((P_x == -10) && (P_y < -70)){ P_x += 2; }
+		// 地面
+		if ((P_x > -200) && (P_x < -120) && (P_y <= -200)){ vy = 0; P_y = -200; is_Jump = true; }
+		else if ((P_x > -200) && (P_x < -120)&&(P_y >= -199)) { is_Jump = false; }
+
+		//パンチ
+		if (is_Punch){ vy = -50;
+		drawTextureBox(-60, -70, 128, 256, 0, 0, 128, 256, don, Color(1, 1, 1));
+		}
+
 
 		
 		// 地面
@@ -700,8 +723,15 @@ int main() {
 			if (app_env.isPushKey(GLFW_KEY_SPACE)){ vy = -3.5; }
 		}
 
-
-
+		// ブーン
+		bun_move1 += 0.1;
+		bun_move2 += 0.08;
+		bun_move3 += 0.09;
+		drawTextureBox(2 * bun_move1, std::sin(bun_move1) * 4 + 200, 512-256, 128-64, 0, 0, 512, 128, bun, Color(1, 1, 1));
+		drawTextureBox(2 * bun_move2 - 250, std::sin(bun_move2) * 4 + 280, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
+		drawTextureBox(2 * bun_move3 - 700, std::sin(bun_move3) * 4 + 180, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
+		drawTextureBox(2 * bun_move2 - 1200, std::sin(bun_move1) * 4 + 220, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
+		
 		//
 		//コメント欄
 		//
