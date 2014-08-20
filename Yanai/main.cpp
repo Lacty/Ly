@@ -495,6 +495,8 @@ int main() {
 
 	bool is_Punch = false;
 
+	bool swich = false;
+
 	float bun_move1 = 0;
 	float bun_move2 = 0;
 	float bun_move3 = 0;
@@ -502,6 +504,7 @@ int main() {
 	bool is_Ly = false;
 	float ly_x = 800;
 
+	Texture start_flag("res/start_flag.png");
 	Texture tree("res/tree.png");
 	Texture ya("res/ya.png");
 	Texture block("res/block.png");
@@ -509,6 +512,9 @@ int main() {
 	Texture ly("res/Ly.png");
 	Texture bun("res/bu-n.png");
 	Texture don("res/don.png");
+	Texture ranran_hatena("res/ranran_hatena.png");
+	Texture swich1("res/Swich1.png");
+	Texture swich2("res/Swich2.png");
 
 	right = true;
 	
@@ -555,6 +561,9 @@ int main() {
 				pork_L,
 				Color(1, 1, 1));
 		}
+
+		//StartFlag
+		drawTextureBox(-800, -210, 140, 140, 0, 0, 256, 256, start_flag, Color(1, 1, 1));
 
 		//　木
 		drawTextureBox(-550, -215, 256-64, 512-128,
@@ -633,16 +642,43 @@ int main() {
 		if ((P_x > -121) && (P_x < -10) && (P_y <= -69)){ is_Jump = true; }
 		if ((P_x > -121) && (P_x < -10) && (P_y > -70)){ is_Jump = false; }
 		if ((P_x == -10) && (P_y < -70)){ P_x += 2; }
-		// 地面
+		// 階段ー土管までの地面
+		/*
 		if ((P_x > -200) && (P_x < -120) && (P_y <= -200)){ vy = 0; P_y = -200; is_Jump = true; }
 		else if ((P_x > -200) && (P_x < -120)&&(P_y >= -199)) { is_Jump = false; }
+		*/
 
 		//パンチ
 		if (is_Punch){ vy = -50;
 		drawTextureBox(-60, -70, 128, 256, 0, 0, 128, 256, don, Color(1, 1, 1));
 		}
 
+		//土管からの地面
+		if ((P_y <= -200) && (P_y >= -205) && (P_x >= -10)&&(P_x <= 190)){
+			is_Jump = true;
+			vy = 0;
+			P_y = -200;
+			drawTextureBox(P_x + 40, P_y + 55, 128, 128, 0, 0, 256, 256, ranran_hatena, Color(1, 1, 1));
+		}
+		else if(P_x >= -10){ is_Jump = false; }
 
+		//スイッチ
+		if ((P_x >= 60)&&(P_x <= 190)){
+			if (!swich){
+				if (app_env.isPushKey(GLFW_KEY_ENTER)){
+					swich = true;
+				}
+			}
+			else if (app_env.isPushKey(GLFW_KEY_ENTER)){
+				swich = false;
+			}
+		}
+		if (!swich){
+			drawTextureBox(170, -205, 64, 64, 0, 0, 128, 128, swich2, Color(1, 1, 1));
+		}
+		else { drawTextureBox(170, -205, 64, 64, 0, 0, 128, 128, swich1, Color(1, 1, 1)); }
+
+		
 		
 		// 地面
 		drawTextureBox(B_x, B_y, 50, 50, 0, 0, 64, 64,
@@ -687,34 +723,13 @@ int main() {
 			block, Color(1, 1, 1));
 		drawTextureBox(B_x + 20 * block_x, B_y, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 21 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 22 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 23 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 24 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 25 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 26 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 27 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 28 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 29 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 30 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 31 * block_x, B_y, 50, 50, 0, 0, 64, 64,
-			block, Color(1, 1, 1));
 
 
 		//重力制御
-		if ((P_y < -200)&&(P_y > -205)&&(P_x < -400)){
+		if ((P_y <= -200)&&(P_y >= -205)&&(P_x < -400)){
 			is_Jump = true;
 			vy = 0;
+			P_y = -200;
 		}
 		else if (P_x < -400){ is_Jump = false; }
 
