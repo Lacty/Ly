@@ -493,9 +493,21 @@ int main() {
 	float B_y = -250;
 	float block_x = 50;
 
+	bool block1314 = false;
+	float bvy = 0.0;
+	float B_y13 = -200;
+	float B_y14 = -200;
+
+	float bbvy = 0.0;
+	float B_y17 = -200;
+	float B_y18 = -200;
+	float B_y19 = -200;
+	float B_y20 = -200;
+
 	bool is_Punch = false;
 
 	bool swich = false;
+	float S_y = -205;
 
 	float bun_move1 = 0;
 	float bun_move2 = 0;
@@ -524,7 +536,24 @@ int main() {
 
 		P_y -= vy;
 		vy += g;
-		
+
+		// 13,14ブロックの重力
+		if (block1314){
+			bvy += g;
+			B_y13 -= bvy;
+			B_y14 -= bvy;
+		}
+
+		// 17,18,19,20ブロック
+		// Swichの重力
+		if (swich){
+			bbvy += g;
+			B_y17 -= bbvy;
+			B_y18 -= bbvy;
+			B_y19 -= bbvy;
+			B_y20 -= bbvy;
+			S_y -= bbvy;
+		}
 
 		// 描画準備
 		app_env.setupDraw();
@@ -642,41 +671,48 @@ int main() {
 		if ((P_x > -121) && (P_x < -10) && (P_y <= -69)){ is_Jump = true; }
 		if ((P_x > -121) && (P_x < -10) && (P_y > -70)){ is_Jump = false; }
 		if ((P_x == -10) && (P_y < -70)){ P_x += 2; }
-		// 階段ー土管までの地面
-		/*
-		if ((P_x > -200) && (P_x < -120) && (P_y <= -200)){ vy = 0; P_y = -200; is_Jump = true; }
-		else if ((P_x > -200) && (P_x < -120)&&(P_y >= -199)) { is_Jump = false; }
-		*/
 
+		// 階段ー土管までの地面
+		if ((P_x > -200) && (P_x < -120) && (P_y <= B_y13)){ vy = 0; P_y = B_y13; is_Jump = true; block1314 = true; }
+		else if ((P_x > -200) && (P_x < -120)&&(P_y >= B_y13 + 1)) { is_Jump = false; }
+		
 		//パンチ
 		if (is_Punch){ vy = -50;
 		drawTextureBox(-60, -70, 128, 256, 0, 0, 128, 256, don, Color(1, 1, 1));
 		}
 
-		//土管からの地面
-		if ((P_y <= -200) && (P_y >= -205) && (P_x >= -10)&&(P_x <= 190)){
-			is_Jump = true;
-			vy = 0;
-			P_y = -200;
-			drawTextureBox(P_x + 40, P_y + 55, 128, 128, 0, 0, 256, 256, ranran_hatena, Color(1, 1, 1));
+		//土管からの地面 重力
+		if (!swich){
+			if ((P_y <= -200) && (P_y >= -205) && (P_x >= -10) && (P_x <= 190)){
+				is_Jump = true;
+				vy = 0;
+				P_y = -200;
+				drawTextureBox(P_x + 40, P_y + 55, 128, 128, 0, 0, 256, 256, ranran_hatena, Color(1, 1, 1));
+			}
+			else if (P_x >= -10){ is_Jump = false; }
 		}
-		else if(P_x >= -10){ is_Jump = false; }
+		else{
+			if ((P_y <= B_y17) && (P_y >= B_y17 -5) && (P_x >= -10) && (P_x <= 190)){
+				is_Jump = true;
+				vy = 0;
+				P_y = B_y17;
+				drawTextureBox(P_x + 40, P_y + 55, 128, 128, 0, 0, 256, 256, ranran_hatena, Color(1, 1, 1));
+			}
+			else if (P_x >= -10){ is_Jump = false; }
+		}
 
 		//スイッチ
-		if ((P_x >= 60)&&(P_x <= 190)){
+		if ((P_x >= 60)&&(P_x <= 190)&&(P_y >= -220)&&(P_y <= 140)){
 			if (!swich){
 				if (app_env.isPushKey(GLFW_KEY_ENTER)){
 					swich = true;
 				}
 			}
-			else if (app_env.isPushKey(GLFW_KEY_ENTER)){
-				swich = false;
-			}
 		}
 		if (!swich){
-			drawTextureBox(170, -205, 64, 64, 0, 0, 128, 128, swich2, Color(1, 1, 1));
+			drawTextureBox(170, S_y, 64, 64, 0, 0, 128, 128, swich2, Color(1, 1, 1));
 		}
-		else { drawTextureBox(170, -205, 64, 64, 0, 0, 128, 128, swich1, Color(1, 1, 1)); }
+		else { drawTextureBox(170, S_y, 64, 64, 0, 0, 128, 128, swich1, Color(1, 1, 1)); }
 
 		
 		
@@ -707,21 +743,24 @@ int main() {
 			block, Color(1, 1, 1));
 		drawTextureBox(B_x + 12 * block_x, B_y, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 13 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+		
+		drawTextureBox(B_x + 13 * block_x, B_y13 -50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 14 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 14 * block_x, B_y14 -50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
+		
 		drawTextureBox(B_x + 15 * block_x, B_y, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
 		drawTextureBox(B_x + 16 * block_x, B_y, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 17 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+
+		drawTextureBox(B_x + 17 * block_x, B_y17-50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 18 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 18 * block_x, B_y18-50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 19 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 19 * block_x, B_y19-50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 20 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 20 * block_x, B_y20-50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
 
 
