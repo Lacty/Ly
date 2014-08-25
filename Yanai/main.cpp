@@ -714,6 +714,16 @@ int main() {
 		}
 		else { drawTextureBox(170, S_y, 64, 64, 0, 0, 128, 128, swich1, Color(1, 1, 1)); }
 
+		// スイッチからの地面
+		if (swich){
+			if ((P_y <= -200) && (P_y >= -205) && (P_x >= 290)){
+				is_Jump = true;
+				vy = 0;
+				P_y = -200;
+			}
+			else if (P_x >= 290){ is_Jump = false; }
+		}
+
 		
 		
 		// 地面
@@ -762,6 +772,27 @@ int main() {
 			block, Color(1, 1, 1));
 		drawTextureBox(B_x + 20 * block_x, B_y20-50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
+
+		if (swich){
+			drawTextureBox(B_x + 23 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+			drawTextureBox(B_x + 24 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+			drawTextureBox(B_x + 25 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+			drawTextureBox(B_x + 26 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+			drawTextureBox(B_x + 27 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+			drawTextureBox(B_x + 28 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+			drawTextureBox(B_x + 29 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+			drawTextureBox(B_x + 30 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+			drawTextureBox(B_x + 31 * block_x, B_y, 50, 50, 0, 0, 64, 64,
+				block, Color(1, 1, 1));
+		}
 
 
 		//重力制御
