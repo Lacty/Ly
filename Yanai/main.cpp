@@ -143,6 +143,13 @@ int main() {
   Texture swich1("res/Swich1.png");
   Texture swich2("res/Swich2.png");
 
+  Texture clear_logo("res/clear_logo.png");
+  Texture clear_sellect("res/clear_sellect.png");
+
+  Texture youdead("res/you_dead.png");
+
+  int timer = 0;
+
   right = true;
 
   int MODE = 0;
@@ -419,6 +426,10 @@ int main() {
 					Color(1, 1, 1));
 			}
 
+			// 画面外に出ないようにする
+			if (P_x <= -900){ P_x += 3; }
+			if (P_x >= 660){ P_x -= 3; }
+
 			//
 			//【ロゴ】ステージ選択
 			//
@@ -512,10 +523,46 @@ int main() {
 			if ((P_x < -20) && (P_x > -280)){
 				if (app_env.isPressKey(GLFW_KEY_ENTER)){ 
 					MODE = 2;
-					// 変数の初期化
-					meteo_move = 0;
+
+					// Stage1の変数の初期化
 					P_x = -750;
+					P_y = -200;
+					vy = 0;
+
 					right = true;
+
+					B_x = -800;
+					B_y = -250;
+					block_x = 50;
+					block1314 = false;
+					bvy = 0.0;
+					B_y13 = -200;
+					B_y14 = -200;
+
+					bbvy = 0.0;
+					B_y17 = -200;
+					B_y18 = -200;
+					B_y19 = -200;
+					B_y20 = -200;
+
+					S_y = -205;
+
+					bun_move1 = 0;
+					bun_move2 = 0;
+					bun_move3 = 0;
+
+					Ya = false;
+					Ya_y = 0;
+					Ya_vy = 10;
+					Ya_g = 0.18;
+
+					is_Ly = false;
+					ly_x = 800;
+
+					is_Jump = true;
+
+					is_Punch = false;
+					swich = false;
 				}
 			}
 	}
@@ -575,6 +622,9 @@ int main() {
 				pork_L,
 				Color(1, 1, 1));
 		}
+
+		if (P_x <= -880){ P_x += 2; }
+		if (P_x >= 700){ P_x -= 2; }
 
 		//StartFlag
 		drawTextureBox(-800, -210, 140, 140, 0, 0, 256, 256, start_flag, Color(1, 1, 1));
@@ -850,8 +900,74 @@ int main() {
 			is_Punch = false;
 			swich = false;
 		}
+		
+		// クリア画面へ移動
+		if (P_x >= 650){ MODE = 3; }
+
+		// 死亡時 完成版ではdead変数を用意
+		// αでは落下死とする
+		if (P_y <= -400){ MODE = 4; }
 	}
 	break;
+
+	case 3:
+	{
+			  drawTextureBox(-512, -512, 1024, 1024, 0, 0, 512, 512, clear_logo, Color(1, 1, 1));
+			  drawTextureBox(400, -400, 400, 400, 0, 0, 512, 512, clear_sellect, Color(1, 1, 1));
+			  if (app_env.isPushKey(GLFW_KEY_ESCAPE)){ return 0; }
+			  if (app_env.isPushKey(GLFW_KEY_ENTER)){ MODE = 1; P_x = -650; }
+	}
+	break;
+
+	case 4:
+	{
+			  drawTextureBox(-128, -128, 256, 256, 0, 0, 256, 256, youdead, Color(1, 1, 1));
+
+			timer += 1;
+			if (timer >= 120){
+			MODE = 2; 
+
+			// 変数の初期化
+			P_x = -750;
+			P_y = -200;
+			vy = 0;
+
+			right = true;
+
+			B_x = -800;
+			B_y = -250;
+			block_x = 50;
+			block1314 = false;
+			bvy = 0.0;
+			B_y13 = -200;
+			B_y14 = -200;
+
+			bbvy = 0.0;
+			B_y17 = -200;
+			B_y18 = -200;
+			B_y19 = -200;
+			B_y20 = -200;
+
+			S_y = -205;
+
+			bun_move1 = 0;
+			bun_move2 = 0;
+			bun_move3 = 0;
+
+			Ya = false;
+			Ya_y = 0;
+			Ya_vy = 10;
+			Ya_g = 0.18;
+
+			is_Ly = false;
+			ly_x = 800;
+
+			is_Jump = true;
+
+			is_Punch = false;
+			swich = false;
+			}
+	}
 	}
     
     //
