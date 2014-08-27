@@ -1,14 +1,18 @@
 ﻿//
 // アプリ雛形
+// ※ファイル分割対応版
 //
 
-#include "appEnv.hpp"
+#include "lib/appEnv.hpp"
+
+// ↑他の.cppファイルでは、必要なヘッダファイルを
+//   適時インクルードする事
 
 
 // アプリのウインドウサイズ
 enum Window {
-	WIDTH = 1600,
-	HEIGHT = 900
+  WIDTH  = 1600,
+  HEIGHT = 900
 };
 
 
@@ -16,67 +20,150 @@ enum Window {
 // メインプログラム
 // 
 int main() {
-	// アプリウインドウの準備
-	AppEnv app_env(Window::WIDTH, Window::HEIGHT, false, false);
-	app_env.bgColor(Color(1, 1, 1));
-	// app_env.windowPosition(Vec2i(10, 10));
+  // アプリウインドウの準備
+  AppEnv app_env(Window::WIDTH, Window::HEIGHT,
+                 false, false);
+  app_env.bgColor(Color(1, 1, 1));
+  // app_env.windowPosition(Vec2i(10, 10));
 
-	// 自キャラ情報
-	Texture pork_R("res/pork3.png");                          // 右向きの画像
-	Texture pork_L("res/pork2.png");                           // 左向きの画像
-	Texture kage("res/kage.png");                                // 影
-	float P_x = -600;                                                      // キャラクターの位置情報 x
-	float P_y = -200;                                                      // キャラクターの位置情報 y
-	int P_x2 = 256;
-	int P_y2 = 128;
-	bool right = true;                                                     // 向きを決める変数
-	float move = 0;                                                         // 上下運動
-	Texture coment_butagoyane("res/coment_butagoyane.png"); // ここが新しい豚小屋ね
-	Texture kusoge("res/kusoge.png");                        // くそげ
-	Texture nitya_R("res/pork4.png");                          //ニチャァ
-	Texture nitya_L("res/pork5.png");
-	Texture nityaa("res/nityaa.png");                            // 吹き出しニチャァ
+  // 自キャラ情報
+  Texture pork_R("res/pork3.png");                          // 右向きの画像
+  Texture pork_L("res/pork2.png");                           // 左向きの画像
+  Texture kage("res/kage.png");                                // 影
+  float P_x = -600;                                                      // キャラクターの位置情報 x
+  float P_y = -200;                                                      // キャラクターの位置情報 y
+  int P_x2 = 256;
+  int P_y2 = 128;
+  bool right = true;                                                     // 向きを決める変数
+  float move = 0;                                                         // 上下運動
+  Texture coment_butagoyane("res/coment_butagoyane.png"); // ここが新しい豚小屋ね
+  Texture kusoge("res/kusoge.png");                        // くそげ
+  Texture nitya_R("res/pork4.png");                          //ニチャァ
+  Texture nitya_L("res/pork5.png");
+  Texture nityaa("res/nityaa.png");                            // 吹き出しニチャァ
 
-	// 背景・豚小屋
-	Texture ground("res/ground.png");                       // 地面
-	Texture butagoya("res/butagoya.png");                // 豚小屋
-	Texture cloud_1("res/cloud_1.png");                     // 雲
-	float cloud_move = 0;                                             // 雲浮遊
-	Texture start_rogo("res/start_rogo.png");             // startロゴ
-	Texture exit("res/exit.png");                                    // exitロゴ
-	Texture a_d("res/A,D.png");
+  // 背景・豚小屋
+  Texture ground("res/ground.png");                       // 地面
+  Texture butagoya("res/butagoya.png");                // 豚小屋
+  Texture cloud_1("res/cloud_1.png");                     // 雲
+  float cloud_move = 0;                                             // 雲浮遊
+  Texture start_rogo("res/start_rogo.png");             // startロゴ
+  Texture exit("res/exit.png");                                    // exitロゴ
+  Texture a_d("res/A,D.png");
 
-	// 隕石
-	Texture meteo_a("res/meteo_a.png");                  // 隕石
-	Texture fire("res/fire.png");
-	Texture fire_under("res/fire_under.png");
-	bool meteo_mode = false;                                     // 隕石を落とすか？の判定
-	int meteo_move = 0;                                              // 隕石落下速度
-	Texture bakuhatu("res/bakuhatu.png");               // 落下後の爆発
-	Texture bakuhatu2("res/bakuhatu2.png");           // 落下後の爆発２
-	Texture meteo_wind_r("res/meteo_wind_r1.png"); // 爆風
-	Texture meteo_wind_l("res/meteo_wind_l1.png");
-	Texture gareki("res/gareki.png");                          // がれき
+  // 隕石
+  Texture meteo_a("res/meteo_a.png");                  // 隕石
+  Texture fire("res/fire.png");
+  Texture fire_under("res/fire_under.png");
+  bool meteo_mode = false;                                     // 隕石を落とすか？の判定
+  int meteo_move = 0;                                              // 隕石落下速度
+  Texture bakuhatu("res/bakuhatu.png");               // 落下後の爆発
+  Texture bakuhatu2("res/bakuhatu2.png");           // 落下後の爆発２
+  Texture meteo_wind_r("res/meteo_wind_r1.png"); // 爆風
+  Texture meteo_wind_l("res/meteo_wind_l1.png");
+  Texture gareki("res/gareki.png");                          // がれき
 
-	// ブラックアウト用の変数
-	int blackout = 0;
+  // ブラックアウト用の変数
+  int blackout = 0;
 
-	// 重力
-	int v = 0;
+  // 重力
+  int v = 0;
 
-	while (1) {
-		// アプリウインドウが閉じられたらプログラムを終了
-		if (!app_env.isOpen()) return 0;
+  // ステージせんたく
+  Texture stage_sellect("res/stage_sellect.png");
 
-		// 描画準備
-		app_env.setupDraw();
+  // stage_1
+  Texture stage_1("res/stage_1.png");
 
+  //Enter押してステージ決定
+  Texture enter_to_sellect_stage("res/enter_to_sellect_stage.png");
+
+  // 豚小屋をなくしたらん豚は,新たな豚小屋を目指すのだった
+  Texture select_comment_1("res/select_comment_1.png");
+
+  // Enter
+  Texture enter("res/Enter.png");
+  bool click_enter = false;
+
+  // らんらん♪
+  Texture ranran("res/ranran.png");
+
+  // Flag
+  Texture flag("res/flag.png");
+
+  int comment_move = 0;
+
+  float vy = 0.0;
+  float g = 0.1;
+
+  bool gravity = false;
+  bool is_Jump = false;
+
+  bool Ya = false;
+  float Ya_y = 0;
+  float Ya_vy = 10;
+  float Ya_g = 0.18;
+
+  float B_x = -800;
+  float B_y = -250;
+  float block_x = 50;
+
+  bool block1314 = false;
+  float bvy = 0.0;
+  float B_y13 = -200;
+  float B_y14 = -200;
+
+  float bbvy = 0.0;
+  float B_y17 = -200;
+  float B_y18 = -200;
+  float B_y19 = -200;
+  float B_y20 = -200;
+
+  bool is_Punch = false;
+
+  bool swich = false;
+  float S_y = -205;
+
+  float bun_move1 = 0;
+  float bun_move2 = 0;
+  float bun_move3 = 0;
+
+  bool is_Ly = false;
+  float ly_x = 800;
+
+  Texture start_flag("res/start_flag.png");
+  Texture tree("res/tree.png");
+  Texture ya("res/ya.png");
+  Texture block("res/block.png");
+  Texture dokan("res/dokan.png");
+  Texture ly("res/Ly.png");
+  Texture bun("res/bu-n.png");
+  Texture don("res/don.png");
+  Texture ranran_hatena("res/ranran_hatena.png");
+  Texture swich1("res/Swich1.png");
+  Texture swich2("res/Swich2.png");
+
+  right = true;
+
+  int MODE = 0;
+
+  while (1) {
+    // アプリウインドウが閉じられたらプログラムを終了
+    if (!app_env.isOpen()) return 0;
+    
+    // 描画準備
+    app_env.setupDraw();
+
+
+	switch (MODE){
+	case 0:
+	{
 		{   // 背景
 			// 地面
 			drawTextureBox(-830, -400, 2048, 1024,
-				0, 0, 2048, 1024,
-				ground,
-				Color(1, 1, 1));
+			0, 0, 2048, 1024,
+			ground,
+			Color(1, 1, 1));
 
 			if (meteo_move < 500){
 
@@ -112,85 +199,85 @@ int main() {
 
 		{   //操作キャラの処理
 
-			if ((app_env.isPressKey('D')) && (meteo_move < 500)) {  // Dを押したら右に移動
-				P_x += 2;
-				right = true;
-			}
-			if ((app_env.isPressKey('A')) && (meteo_move < 500)) {  // Aを押したら左に移動
-				P_x -= 2;
-				right = false;
-			}
+			  if ((app_env.isPressKey('D')) && (meteo_move < 500)) {  // Dを押したら右に移動
+				  P_x += 2;
+				  right = true;
+			  }
+			  if ((app_env.isPressKey('A')) && (meteo_move < 500)) {  // Aを押したら左に移動
+				  P_x -= 2;
+				  right = false;
+			  }
 
-			// 影
-			drawTextureBox(P_x, P_y - 10, 256, 128,
-				0, 0, 256, 128,
-				kage,
-				Color(1, 1, 1));
+			  // 影
+			  drawTextureBox(P_x, P_y - 10, 256, 128,
+				  0, 0, 256, 128,
+				  kage,
+				  Color(1, 1, 1));
 
-			// 左右向いた時の画像切り替え
-			// sinの振れ
-			move += 0.05;
-			if (meteo_move < 2200){
-				if (right){
-					drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
-						0, 0, 256, 128,
-						pork_R,
-						Color(1, 1, 1));
-				}
-				else {
-					drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
-						0, 0, 256, 128,
-						pork_L,
-						Color(1, 1, 1));
-				}
-			}
-			else if (right){
-				drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
-					0, 0, 256, 128,
-					nitya_R,
-					Color(1, 1, 1));
-			}
-			else {
-				drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
-					0, 0, 256, 128,
-					nitya_L,
-					Color(1, 1, 1));
-			}
+			  // 左右向いた時の画像切り替え
+			  // sinの振れ
+			  move += 0.05;
+			  if (meteo_move < 2200){
+				  if (right){
+					  drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
+						  0, 0, 256, 128,
+						  pork_R,
+						  Color(1, 1, 1));
+				  }
+				  else {
+					  drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
+						  0, 0, 256, 128,
+						  pork_L,
+						  Color(1, 1, 1));
+				  }
+			  }
+			  else if (right){
+				  drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
+					  0, 0, 256, 128,
+					  nitya_R,
+					  Color(1, 1, 1));
+			  }
+			  else {
+				  drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
+					  0, 0, 256, 128,
+					  nitya_L,
+					  Color(1, 1, 1));
+			  }
 
-			// 吹き出しニチャァ
-			if (meteo_move > 2200){
-				drawTextureBox(P_x + 100, -100, 256, 256,
-					0, 0, 256, 256,
-					nityaa,
-					Color(1, 1, 1));
-			}
+			  // 吹き出しニチャァ
+			  if (meteo_move > 2200){
+				  drawTextureBox(P_x + 100, -100, 256, 256,
+					  0, 0, 256, 256,
+					  nityaa,
+					  Color(1, 1, 1));
+			  }
 
-			// 豚小屋に近づいたら吹き出し　*右を向いていて
-			if (right){
-				if ((P_x >= -250) && (P_x <= -150)){
-					if (meteo_move < 2000){
-						drawTextureBox(P_x + 100, -80, 256, 256,
-							0, 0, 256, 256,
-							coment_butagoyane,
-							Color(1, 1, 1));
-					}
-				}
-			}
+			  // 豚小屋に近づいたら吹き出し　*右を向いていて
+			  if (right){
+				  if ((P_x >= -250) && (P_x <= -150)){
+					  if (meteo_move < 2000){
+						  drawTextureBox(P_x + 100, -80, 256, 256,
+							  0, 0, 256, 256,
+							  coment_butagoyane,
+							  Color(1, 1, 1));
+					  }
+				  }
+			  }
 
-			// くそげ
-			if (P_x <= -860){
-				drawTextureBox(P_x + 140, -80, 256, 256,
-					0, 0, 256, 256,
-					kusoge,
-					Color(1, 1, 1));
-			}
+			  // くそげ
+			  if (P_x <= -860){
+				  drawTextureBox(P_x + 140, -80, 256, 256,
+					  0, 0, 256, 256,
+					  kusoge,
+					  Color(1, 1, 1));
+			  }
 
-			// 左端にいったらEXIT
-			if (P_x <= -1000){
-				app_env.flushInput();
-				return 0;
-			}
-		}
+			  // 左端にいったらEXIT
+			  if (P_x <= -1000){
+				  app_env.flushInput();
+				  return 0;
+			  }
+	}
 
 		{ // 隕石の処理
 			if (P_x > -180){
@@ -275,74 +362,30 @@ int main() {
 				Color(1, 1, 1));
 		}
 
-		//　ブラックアウト
-		if (meteo_move > 2600){
-			blackout += 1;
-			drawFillBox(-800, -450, 1600, 900, color256(0, 0, 0, blackout));
-		}
-		if (meteo_move >= 5000){
-			break;
-		}
+			  //　ブラックアウト
+			  if (meteo_move > 2600){
+				  blackout += 1;
+				  drawFillBox(-800, -450, 1600, 900, color256(0, 0, 0, blackout));
+			  }
+			  if (meteo_move >= 5000){
+				  MODE = 1;
+				  P_x = -650;
+			  }
 
-		if (app_env.isPressKey('Z')){
-			break;
-		}
-
-
-		// 
-		// ここに描画処理を書く
-		//
-
-
-		// 画面更新
-		app_env.update();
+			  if (app_env.isPressKey('Z')){
+				  MODE = 1;
+				  P_x = -650;
+			  }
 	}
+	break;
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	case 1:
+	{
+			//
+			//操作キャラの処理
+			//
 
-	// ステージせんたく
-	Texture stage_sellect("res/stage_sellect.png");
-
-	// stage_1
-	Texture stage_1("res/stage_1.png");
-
-	//Enter押してステージ決定
-	Texture enter_to_sellect_stage("res/enter_to_sellect_stage.png");
-
-	// 豚小屋をなくしたらん豚は,新たな豚小屋を目指すのだった
-	Texture select_comment_1("res/select_comment_1.png");
-
-	// Enter
-	Texture enter("res/Enter.png");
-	bool click_enter = false;
-
-	// らんらん♪
-	Texture ranran("res/ranran.png");
-
-	// Flag
-	Texture flag("res/flag.png");
-
-	// 変数の初期化
-	meteo_move = 0;
-	P_x = -500;
-	int comment_move = 0;
-
-
-	while (1) {
-		// アプリウインドウが閉じられたらプログラムを終了
-		if (!app_env.isOpen()) return 0;
-
-		// 描画準備
-		app_env.setupDraw();
-
-
-		//
-		//操作キャラの処理
-		//
-
-		// Enterを押されるまで実行
+			// Enterを押されるまで実行
 			if (click_enter){
 				if (app_env.isPressKey('D')) {  // Dを押したら右に移動
 					P_x += 3;
@@ -353,187 +396,132 @@ int main() {
 					right = false;
 				}
 			}
-		
 
-		// 影
-		drawTextureBox(P_x, P_y - 10, 256, 128,
-			0, 0, 256, 128,
-			kage,
-			Color(1, 1, 1));
 
-		// 左右向いた時の画像
-		move += 0.05;// sinの振れ
-		if (right){
-			drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
+			// 影
+			drawTextureBox(P_x, P_y - 10, 256, 128,
 				0, 0, 256, 128,
-				pork_R,
+				kage,
 				Color(1, 1, 1));
-		}
-		else {
-			drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
-				0, 0, 256, 128,
-				pork_L,
-				Color(1, 1, 1));
-		}
 
-		//
-		//【ロゴ】ステージ選択
-		//
-		drawTextureBox(-256, 200, 512, 256,
-			0, 0, 512, 256,
-			stage_sellect,
-			Color(1, 1, 1));
-
-		//
-		//キャラクターコメント
-		//
-		if ((P_x < -20) && (P_x > -280)){
-			drawTextureBox(P_x + 160, -100, 256, 256,
-				0, 0, 256, 256,
-				ranran,
-				Color(1, 1, 1));
-		}
-
-
-		//
-		//旗
-		//
-
-		drawTextureBox(-140, -220, 256, 256,
-			0, 0, 256, 256,
-			flag,
-			Color(1, 1, 1));
-		drawTextureBox(-140, -280, 256, 64,
-			0, 0, 256, 64,
-			stage_1,
-			Color(1, 1, 1));
-
-
-
-		//
-		//コメント欄
-		//
-
-		// Black長方形
-		drawFillBox(-800, -450, 1600, 150, Color(0, 0, 0));
-
-		// Enter押したらコメントを消す
-		if (app_env.isPushKey(GLFW_KEY_ENTER)){
-			app_env.flushInput();
-			click_enter = true;
-		}
-
-		comment_move -= 5;
-		if (comment_move < -4810){
-			comment_move == -4810;
-		}
-
-		// comment_moveが一定の範囲かつ
-		// Enterを押されるまで実行
-		if ((comment_move < 0) && (comment_move > -4800)){
-			if (!click_enter){
-
-				right = true;
-
-				// Enter 画像
-				drawTextureBox(540, -300, 256, 128,
+			// 左右向いた時の画像
+			move += 0.05;// sinの振れ
+			if (right){
+				drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
 					0, 0, 256, 128,
-					enter,
-					Color(1, 1, 1));
-
-				//　コメント　画像
-				drawTextureBox(600 + comment_move, -450, 3500, 210,
-					0, 0, 4096, 256,
-					select_comment_1,
+					pork_R,
 					Color(1, 1, 1));
 			}
 			else {
-				comment_move == -4800;
+				drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2, P_y2,
+					0, 0, 256, 128,
+					pork_L,
+					Color(1, 1, 1));
 			}
-		}
-		else {
-			click_enter = true;
-		}
 
-		//Enterを押してステージ決定
-		if ((P_x < -20) && (P_x > -280)){
-			drawTextureBox(-450, -430, 1024, 128,
-				0, 0, 1024, 128,
-				enter_to_sellect_stage,
+			//
+			//【ロゴ】ステージ選択
+			//
+			drawTextureBox(-256, 200, 512, 256,
+				0, 0, 512, 256,
+				stage_sellect,
 				Color(1, 1, 1));
-		}
 
-		//
-		//ステージ１にブレイク
-		//
-		if ((P_x < -20) && (P_x > -280)){
-			if (app_env.isPressKey(GLFW_KEY_ENTER)){ break; }
-		}
+			//
+			//キャラクターコメント
+			//
+			if ((P_x < -20) && (P_x > -280)){
+				drawTextureBox(P_x + 160, -100, 256, 256,
+					0, 0, 256, 256,
+					ranran,
+					Color(1, 1, 1));
+			}
 
-		// 画面更新
-		app_env.update();
+
+			//
+			//旗
+			//
+
+			drawTextureBox(-140, -220, 256, 256,
+				0, 0, 256, 256,
+				flag,
+				Color(1, 1, 1));
+			drawTextureBox(-140, -280, 256, 64,
+				0, 0, 256, 64,
+				stage_1,
+				Color(1, 1, 1));
+
+
+
+			//
+			//コメント欄
+			//
+
+			// Black長方形
+			drawFillBox(-800, -450, 1600, 150, Color(0, 0, 0));
+
+			// Enter押したらコメントを消す
+			if (app_env.isPushKey(GLFW_KEY_ENTER)){
+				app_env.flushInput();
+				click_enter = true;
+			}
+
+			comment_move -= 5;
+			if (comment_move < -4810){
+				comment_move == -4810;
+			}
+
+			// comment_moveが一定の範囲かつ
+			// Enterを押されるまで実行
+			if ((comment_move < 0) && (comment_move > -4800)){
+				if (!click_enter){
+
+					right = true;
+
+					// Enter 画像
+					drawTextureBox(540, -300, 256, 128,
+						0, 0, 256, 128,
+						enter,
+						Color(1, 1, 1));
+
+					//　コメント　画像
+					drawTextureBox(600 + comment_move, -450, 3500, 210,
+						0, 0, 4096, 256,
+						select_comment_1,
+						Color(1, 1, 1));
+				}
+				else {
+					comment_move == -4800;
+				}
+			}
+			else {
+				click_enter = true;
+			}
+
+			//Enterを押してステージ決定
+			if ((P_x < -20) && (P_x > -280)){
+				drawTextureBox(-450, -430, 1024, 128,
+					0, 0, 1024, 128,
+					enter_to_sellect_stage,
+					Color(1, 1, 1));
+			}
+
+			//
+			//ステージ１にブレイク
+			//
+			if ((P_x < -20) && (P_x > -280)){
+				if (app_env.isPressKey(GLFW_KEY_ENTER)){ 
+					MODE = 2;
+					// 変数の初期化
+					meteo_move = 0;
+					P_x = -750;
+					right = true;
+				}
+			}
 	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	float vy = 0.0;
-	float g  = 0.1;
+	break;
 
-	bool gravity = false;
-	bool is_Jump = false;
-
-	P_x = -750;
-
-	bool Ya = false;
-	float Ya_y = 0;
-	float Ya_vy = 10;
-	float Ya_g = 0.18;
-
-	float B_x = -800;
-	float B_y = -250;
-	float block_x = 50;
-
-	bool block1314 = false;
-	float bvy = 0.0;
-	float B_y13 = -200;
-	float B_y14 = -200;
-
-	float bbvy = 0.0;
-	float B_y17 = -200;
-	float B_y18 = -200;
-	float B_y19 = -200;
-	float B_y20 = -200;
-
-	bool is_Punch = false;
-
-	bool swich = false;
-	float S_y = -205;
-
-	float bun_move1 = 0;
-	float bun_move2 = 0;
-	float bun_move3 = 0;
-
-	bool is_Ly = false;
-	float ly_x = 800;
-
-	Texture start_flag("res/start_flag.png");
-	Texture tree("res/tree.png");
-	Texture ya("res/ya.png");
-	Texture block("res/block.png");
-	Texture dokan("res/dokan.png");
-	Texture ly("res/Ly.png");
-	Texture bun("res/bu-n.png");
-	Texture don("res/don.png");
-	Texture ranran_hatena("res/ranran_hatena.png");
-	Texture swich1("res/Swich1.png");
-	Texture swich2("res/Swich2.png");
-
-	right = true;
-	
-	while (1) {
-		// アプリウインドウが閉じられたらプログラムを終了
-		if (!app_env.isOpen()) return 0;
-
+	case 2:
 		P_y -= vy;
 		vy += g;
 
@@ -554,10 +542,7 @@ int main() {
 			B_y20 -= bbvy;
 			S_y -= bbvy;
 		}
-
-		// 描画準備
-		app_env.setupDraw();
-
+	{
 		if (app_env.isPressKey('D')) {  // Dを押したら右に移動
 			P_x += 2;
 			right = true;
@@ -579,13 +564,13 @@ int main() {
 		// 左右向いた時の画像切り替え
 		move += 0.05;
 		if (right){
-			drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2-128, P_y2-64,
+			drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2 - 128, P_y2 - 64,
 				0, 0, 256, 128,
 				pork_R,
 				Color(1, 1, 1));
 		}
 		else {
-			drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2-128, P_y2-64,
+			drawTextureBox(P_x, std::abs(std::sin(move)) * 4 + P_y, P_x2 - 128, P_y2 - 64,
 				0, 0, 256, 128,
 				pork_L,
 				Color(1, 1, 1));
@@ -595,7 +580,7 @@ int main() {
 		drawTextureBox(-800, -210, 140, 140, 0, 0, 256, 256, start_flag, Color(1, 1, 1));
 
 		//　木
-		drawTextureBox(-550, -215, 256-64, 512-128,
+		drawTextureBox(-550, -215, 256 - 64, 512 - 128,
 			0, 0, 256, 512,
 			tree,
 			Color(1, 1, 1));
@@ -603,7 +588,7 @@ int main() {
 		// 矢
 		if (P_x >= -580){ Ya = true; }
 		if (Ya){ Ya_y -= Ya_vy; Ya_vy += Ya_g; }
-		if (Ya_y < -220){ Ya_vy = 0; }
+		if (Ya_y <= -220){ Ya_vy = 0; Ya_y = -220; }
 		if (Ya){
 			drawTextureBox(-530, Ya_y, 64, 128,
 				0, 0, 128, 256,
@@ -620,21 +605,21 @@ int main() {
 		}
 
 		// 階段
-		drawTextureBox(B_x + 10*block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 10 * block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 11*block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 11 * block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 11*block_x, B_y + 100, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 11 * block_x, B_y + 100, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 12*block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 12 * block_x, B_y + 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 12*block_x, B_y + 100, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 12 * block_x, B_y + 100, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 12*block_x, B_y + 150, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 12 * block_x, B_y + 150, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
 
 		// block 1列目
-		if ((P_x == -400)&&(P_y < -150)){ P_x -= 2; }
+		if ((P_x == -400) && (P_y < -150)){ P_x -= 2; }
 		if ((P_x > -401) && (P_x < -349) && (P_y <= -150)){ vy = 0; }
 		if ((P_x > -401) && (P_x < -349) && (P_y <= -149)){ is_Jump = true; }
 		if ((P_x > -401) && (P_x < -349) && (P_y > -150)){ is_Jump = false; }
@@ -655,16 +640,17 @@ int main() {
 		if ((P_x > -301) && (P_x < -200) && (P_y > -50)){ is_Ly = true; }
 		if (is_Ly){
 			if (ly_x <= -900){ is_Ly = false; }
-				ly_x -= 25;
-				drawTextureBox(ly_x, -30, 128, 64, 0, 0, 128, 64, ly, Color(1, 1, 1));
+			ly_x -= 25;
+			drawTextureBox(ly_x, -30, 128, 64, 0, 0, 128, 64, ly, Color(1, 1, 1));
 		}
 
 		// どかん
+
 		drawTextureBox(-55, -220, 128, 256, 0, 0, 128, 256, dokan, Color(1, 1, 1));
 		if ((P_x == -120) && (P_y < -70)){ P_x -= 2; }
-		if ((P_x > -121) && (P_x < -10) && (P_y < -70)){ 
-			vy = 0; 
-			P_y = -70; 
+		if ((P_x > -121) && (P_x < -10) && (P_y < -70)){
+			vy = 0;
+			P_y = -70;
 			if (app_env.isPushKey('S')){ is_Punch = true; }
 			// Sを押したときパンチをtrueにする
 		}
@@ -674,11 +660,12 @@ int main() {
 
 		// 階段ー土管までの地面
 		if ((P_x > -200) && (P_x < -120) && (P_y <= B_y13)){ vy = 0; P_y = B_y13; is_Jump = true; block1314 = true; }
-		else if ((P_x > -200) && (P_x < -120)&&(P_y >= B_y13 + 1)) { is_Jump = false; }
-		
+		else if ((P_x > -200) && (P_x < -120) && (P_y >= B_y13 + 1)) { is_Jump = false; }
+
 		//パンチ
-		if (is_Punch){ vy = -50;
-		drawTextureBox(-60, -70, 128, 256, 0, 0, 128, 256, don, Color(1, 1, 1));
+		if (is_Punch){
+			vy = -50;
+			drawTextureBox(-60, -70, 128, 256, 0, 0, 128, 256, don, Color(1, 1, 1));
 		}
 
 		//土管からの地面 重力
@@ -692,7 +679,7 @@ int main() {
 			else if (P_x >= -10){ is_Jump = false; }
 		}
 		else{
-			if ((P_y <= B_y17) && (P_y >= B_y17 -5) && (P_x >= -10) && (P_x <= 190)){
+			if ((P_y <= B_y17) && (P_y >= B_y17 - 5) && (P_x >= -10) && (P_x <= 190)){
 				is_Jump = true;
 				vy = 0;
 				P_y = B_y17;
@@ -702,7 +689,7 @@ int main() {
 		}
 
 		//スイッチ
-		if ((P_x >= 60)&&(P_x <= 190)&&(P_y >= -220)&&(P_y <= 140)){
+		if ((P_x >= 60) && (P_x <= 190) && (P_y >= -220) && (P_y <= 140)){
 			if (!swich){
 				if (app_env.isPushKey(GLFW_KEY_ENTER)){
 					swich = true;
@@ -724,8 +711,7 @@ int main() {
 			else if (P_x >= 290){ is_Jump = false; }
 		}
 
-		
-		
+
 		// 地面
 		drawTextureBox(B_x, B_y, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
@@ -753,24 +739,24 @@ int main() {
 			block, Color(1, 1, 1));
 		drawTextureBox(B_x + 12 * block_x, B_y, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		
-		drawTextureBox(B_x + 13 * block_x, B_y13 -50, 50, 50, 0, 0, 64, 64,
+
+		drawTextureBox(B_x + 13 * block_x, B_y13 - 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 14 * block_x, B_y14 -50, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 14 * block_x, B_y14 - 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		
+
 		drawTextureBox(B_x + 15 * block_x, B_y, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
 		drawTextureBox(B_x + 16 * block_x, B_y, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
 
-		drawTextureBox(B_x + 17 * block_x, B_y17-50, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 17 * block_x, B_y17 - 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 18 * block_x, B_y18-50, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 18 * block_x, B_y18 - 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 19 * block_x, B_y19-50, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 19 * block_x, B_y19 - 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
-		drawTextureBox(B_x + 20 * block_x, B_y20-50, 50, 50, 0, 0, 64, 64,
+		drawTextureBox(B_x + 20 * block_x, B_y20 - 50, 50, 50, 0, 0, 64, 64,
 			block, Color(1, 1, 1));
 
 		if (swich){
@@ -796,7 +782,7 @@ int main() {
 
 
 		//重力制御
-		if ((P_y <= -200)&&(P_y >= -205)&&(P_x < -400)){
+		if ((P_y <= -200) && (P_y >= -205) && (P_x < -400)){
 			is_Jump = true;
 			vy = 0;
 			P_y = -200;
@@ -812,11 +798,11 @@ int main() {
 		bun_move1 += 0.1;
 		bun_move2 += 0.08;
 		bun_move3 += 0.09;
-		drawTextureBox(2 * bun_move1, std::sin(bun_move1) * 4 + 200, 512-256, 128-64, 0, 0, 512, 128, bun, Color(1, 1, 1));
+		drawTextureBox(2 * bun_move1, std::sin(bun_move1) * 4 + 200, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
 		drawTextureBox(2 * bun_move2 - 250, std::sin(bun_move2) * 4 + 280, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
 		drawTextureBox(2 * bun_move3 - 700, std::sin(bun_move3) * 4 + 180, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
 		drawTextureBox(2 * bun_move2 - 1200, std::sin(bun_move1) * 4 + 220, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
-		
+
 		//
 		//コメント欄
 		//
@@ -824,9 +810,58 @@ int main() {
 		// Black長方形
 		drawFillBox(-800, -450, 1600, 150, Color(0, 0, 0));
 
-		// 画面更新
-		app_env.update();
-	}
+		if (app_env.isPushKey('Z')){
+			P_x = -750;
+			P_y = -200;
+			vy = 0;
 
-	// アプリ終了
+			right = true;
+
+			B_x = -800;
+			B_y = -250;
+			block_x = 50;
+			block1314 = false;
+			bvy = 0.0;
+			B_y13 = -200;
+			B_y14 = -200;
+
+			bbvy = 0.0;
+			B_y17 = -200;
+			B_y18 = -200;
+			B_y19 = -200;
+			B_y20 = -200;
+
+			S_y = -205;
+
+			bun_move1 = 0;
+			bun_move2 = 0;
+			bun_move3 = 0;
+
+			Ya = false;
+			Ya_y = 0;
+			Ya_vy = 10;
+			Ya_g = 0.18;
+
+			is_Ly = false;
+			ly_x = 800;
+
+			is_Jump = true;
+
+			is_Punch = false;
+			swich = false;
+		}
+	}
+	break;
+	}
+    
+    //
+    // 描画処理はここでおこなう
+    // 
+    
+    
+    // 画面更新
+    app_env.update();
+  }
+  
+  // アプリ終了
 }
