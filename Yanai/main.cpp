@@ -30,6 +30,8 @@ int main() {
   Texture pork_R("res/pork3.png");                          // 右向きの画像
   Texture pork_L("res/pork2.png");                           // 左向きの画像
   Texture kage("res/kage.png");                                // 影
+  Texture wing_R("res/wing_R.png");                         // 羽right
+  Texture wing_L("res/wing_L.png");                         // 羽left
   float P_x = -600;                                                      // キャラクターの位置情報 x
   float P_y = -200;                                                      // キャラクターの位置情報 y
   int P_x2 = 256;
@@ -50,6 +52,7 @@ int main() {
   Texture start_rogo("res/start_rogo.png");             // startロゴ
   Texture exit("res/exit.png");                                    // exitロゴ
   Texture a_d("res/A,D.png");
+  int Life = 4;                                       // Life変数
 
   // 隕石
   Texture meteo_a("res/meteo_a.png");                  // 隕石
@@ -103,6 +106,7 @@ int main() {
   float Ya_y = 0;
   float Ya_vy = 10;
   float Ya_g = 0.18;
+  bool Ya_Atk = false;
 
   float B_x = -800;
   float B_y = -250;
@@ -555,6 +559,7 @@ int main() {
 					Ya_y = 0;
 					Ya_vy = 10;
 					Ya_g = 0.18;
+					Ya_Atk = false;
 
 					is_Ly = false;
 					ly_x = 800;
@@ -607,6 +612,24 @@ int main() {
 				Color(1, 1, 1));
 		}
 
+		// 羽
+		if (!is_Jump){
+			if (right){
+				drawTextureBox(P_x - 10, std::abs(std::sin(move)) * 4 + P_y + 40, 128, 64,
+					0, 0, 256, 128,
+					wing_R,
+					Color(1, 1, 1));
+			}
+			else{
+				drawTextureBox(P_x + 10, std::abs(std::sin(move)) * 4 + P_y + 40, 128, 64,
+					0, 0, 256, 128,
+					wing_L
+					
+					,
+					Color(1, 1, 1));
+			}
+		}
+
 		// sinの振れ
 		// 左右向いた時の画像切り替え
 		move += 0.05;
@@ -636,7 +659,7 @@ int main() {
 			Color(1, 1, 1));
 
 		// 矢
-		if (P_x >= -580){ Ya = true; }
+		if (P_x >= -600){ Ya = true; }
 		if (Ya){ Ya_y -= Ya_vy; Ya_vy += Ya_g; }
 		if (Ya_y <= -220){ Ya_vy = 0; Ya_y = -220; }
 		if (Ya){
@@ -652,6 +675,12 @@ int main() {
 				0, 0, 128, 256,
 				ya,
 				Color(1, 1, 1));
+		}
+		// 矢あたり判定
+		if ((Ya_y <= -160) && (Ya_y >= -210)){ Ya_Atk = true; }
+		if (Ya_y <= -215){ Ya_Atk = false; }
+		if ((P_x >= -600) && (P_x <= -450)&&(Ya_Atk)&&(is_Jump)){
+			MODE = 4;
 		}
 
 		// 階段
@@ -693,9 +722,11 @@ int main() {
 			ly_x -= 25;
 			drawTextureBox(ly_x, -30, 128, 64, 0, 0, 128, 64, ly, Color(1, 1, 1));
 		}
+		// Lyあたり判定
+		if ((ly_x <= -150) && (ly_x >= -350) && (P_y >= -65)){ MODE = 4; }
+
 
 		// どかん
-
 		drawTextureBox(-55, -220, 128, 256, 0, 0, 128, 256, dokan, Color(1, 1, 1));
 		if ((P_x == -120) && (P_y < -70)){ P_x -= 2; }
 		if ((P_x > -121) && (P_x < -10) && (P_y < -70)){
@@ -891,6 +922,7 @@ int main() {
 			Ya_y = 0;
 			Ya_vy = 10;
 			Ya_g = 0.18;
+			Ya_Atk = false;
 
 			is_Ly = false;
 			ly_x = 800;
@@ -907,6 +939,7 @@ int main() {
 		// 死亡時 完成版ではdead変数を用意
 		// αでは落下死とする
 		if (P_y <= -400){ MODE = 4; }
+		if (P_y >= 500){ MODE = 4; }
 	}
 	break;
 
@@ -921,11 +954,14 @@ int main() {
 
 	case 4:
 	{
-			  drawTextureBox(-128, -128, 256, 256, 0, 0, 256, 256, youdead, Color(1, 1, 1));
+			drawTextureBox(-128, -128, 256, 256, 0, 0, 256, 256, youdead, Color(1, 1, 1));
+
+			Life - 1;
 
 			timer += 1;
 			if (timer >= 120){
-			MODE = 2; 
+			MODE = 2;
+			timer = 0;
 
 			// 変数の初期化
 			P_x = -750;
@@ -958,6 +994,7 @@ int main() {
 			Ya_y = 0;
 			Ya_vy = 10;
 			Ya_g = 0.18;
+			Ya_Atk = false;
 
 			is_Ly = false;
 			ly_x = 800;
@@ -968,6 +1005,7 @@ int main() {
 			swich = false;
 			}
 	}
+		break;
 	}
     
     //
