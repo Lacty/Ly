@@ -152,6 +152,12 @@ int main() {
 
   Texture youdead("res/you_dead.png");
 
+  Texture X4("res/X4.png");
+  Texture X3("res/X3.png");
+  Texture X2("res/X2.png");
+  Texture X1("res/X1.png");
+  Texture X0("res/X0.png");
+
   int timer = 0;
 
   right = true;
@@ -385,6 +391,11 @@ int main() {
 
 			  if (app_env.isPressKey('Z')){
 				  MODE = 1;
+				  P_x = -650;
+			  }
+
+			  if (app_env.isPressKey('X')){
+				  MODE = 4;
 				  P_x = -650;
 			  }
 	}
@@ -680,6 +691,7 @@ int main() {
 		if ((Ya_y <= -160) && (Ya_y >= -210)){ Ya_Atk = true; }
 		if (Ya_y <= -215){ Ya_Atk = false; }
 		if ((P_x >= -600) && (P_x <= -450)&&(Ya_Atk)&&(is_Jump)){
+			Life = Life - 1;
 			MODE = 4;
 		}
 
@@ -723,7 +735,7 @@ int main() {
 			drawTextureBox(ly_x, -30, 128, 64, 0, 0, 128, 64, ly, Color(1, 1, 1));
 		}
 		// Lyあたり判定
-		if ((ly_x <= -150) && (ly_x >= -350) && (P_y >= -65)){ MODE = 4; }
+		if ((ly_x <= -150) && (ly_x >= -350) && (P_y >= -65)){ Life = Life - 1; MODE = 4; }
 
 
 		// どかん
@@ -936,10 +948,9 @@ int main() {
 		// クリア画面へ移動
 		if (P_x >= 650){ MODE = 3; }
 
-		// 死亡時 完成版ではdead変数を用意
-		// αでは落下死とする
-		if (P_y <= -400){ MODE = 4; }
-		if (P_y >= 500){ MODE = 4; }
+		// 落下死とする
+		if (P_y <= -400){ Life = Life - 1; MODE = 4; }
+		if (P_y >= 500){ Life = Life - 1; MODE = 4; }
 	}
 	break;
 
@@ -954,9 +965,43 @@ int main() {
 
 	case 4:
 	{
-			drawTextureBox(-128, -128, 256, 256, 0, 0, 256, 256, youdead, Color(1, 1, 1));
 
-			Life - 1;
+			// You Dead
+ 			drawTextureBox(-128, -50, 256, 256, 0, 0, 256, 256, youdead, Color(1, 1, 1));
+
+			// (´・ω・｀)
+			drawTextureBox(-130, -160, P_x2 - 128, P_y2 - 64,
+						 0, 0, 256, 128,
+					     pork_R,
+						 Color(1, 1, 1));
+
+			if (Life == 4){
+				drawTextureBox(0, -170, 200, 100,
+							 0, 0, 256, 128,
+							 X4,
+							 Color(1, 1, 1));
+			}
+			else if (Life == 3){
+				drawTextureBox(0, -170, 200, 100,
+							 0, 0, 256, 128,
+						     X3,
+							 Color(1, 1, 1));
+			}
+			else if (Life == 2){
+				drawTextureBox(0, -170, 200, 100,
+					0, 0, 256, 128,
+					X2,
+					Color(1, 1, 1));
+			}
+			else if (Life == 1){
+				drawTextureBox(0, -170, 200, 100,
+					0, 0, 256, 128,
+					X1,
+					Color(1, 1, 1));
+			}
+
+
+
 
 			timer += 1;
 			if (timer >= 120){
