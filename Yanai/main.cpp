@@ -47,7 +47,9 @@ int main() {
   // 背景・豚小屋
   Texture ground("res/ground.png");                       // 地面
   Texture butagoya("res/butagoya.png");                // 豚小屋
-  Texture cloud_1("res/cloud_1.png");                     // 雲
+  Texture cloud_buta("res/cloud_buta.png");                     // 雲
+  Texture cloud_ko("res/cloud_ko.png");
+  Texture cloud_ya("res/cloud_ya.png");
   float cloud_move = 0;                                             // 雲浮遊
   Texture start_rogo("res/start_rogo.png");             // startロゴ
   Texture exit("res/exit.png");                                    // exitロゴ
@@ -67,7 +69,8 @@ int main() {
   Texture gareki("res/gareki.png");                          // がれき
 
   // ブラックアウト用の変数
-  int blackout = 0;
+  float blackout = 0;
+  bool GO_MODE2 = false;
 
   // 重力
   int v = 0;
@@ -157,6 +160,14 @@ int main() {
   Texture X2("res/X2.png");
   Texture X1("res/X1.png");
   Texture X0("res/X0.png");
+  Texture uekara("res/uekara.png");
+  Texture dokankara("res/dokankara.png");
+  Texture icanfly("res/icanfly.png");
+  Texture konokusoge("res/konokusoge.png");
+  Texture go_stagesentaku("res/sutagesentaku.png");
+
+  Texture syougai("res/syougai.png");
+  
 
   int timer = 0;
 
@@ -200,17 +211,17 @@ int main() {
 			cloud_move += 0.04;
 			drawTextureBox(0, std::sin(cloud_move) * 5 + 200, 256, 256,
 				0, 0, 256, 256,
-				cloud_1,
+				cloud_ya,
 				Color(1, 1, 1));
 
 			drawTextureBox(-450, std::sin(cloud_move + 1) * 5 + 170, 256, 256,
 				0, 0, 256, 256,
-				cloud_1,
+				cloud_ko,
 				Color(1, 1, 1));
 
 			drawTextureBox(-750, std::sin(cloud_move + 4) * 5 + 170, 256, 256,
 				0, 0, 256, 256,
-				cloud_1,
+				cloud_buta,
 				Color(1, 1, 1));
 		}
 
@@ -387,11 +398,13 @@ int main() {
 			  if (meteo_move >= 5000){
 				  MODE = 1;
 				  P_x = -650;
+				  blackout = 0;
 			  }
 
 			  if (app_env.isPressKey('Z')){
 				  MODE = 1;
 				  P_x = -650;
+				  blackout = 0;
 			  }
 
 			  if (app_env.isPressKey('X')){
@@ -408,16 +421,18 @@ int main() {
 			//
 
 			// Enterを押されるまで実行
-			if (click_enter){
-				if (app_env.isPressKey('D')) {  // Dを押したら右に移動
-					P_x += 3;
-					right = true;
-				}
-				if (app_env.isPressKey('A')) {  // Aを押したら左に移動
-					P_x -= 3;
-					right = false;
-				}
-			}
+			 if (!GO_MODE2){
+				  if (click_enter){
+					  if (app_env.isPressKey('D')) {  // Dを押したら右に移動
+						  P_x += 3;
+						  right = true;
+					  }
+					  if (app_env.isPressKey('A')) {  // Aを押したら左に移動
+						  P_x -= 3;
+						  right = false;
+					  }
+				  }
+			  }
 
 
 			// 影
@@ -536,49 +551,60 @@ int main() {
 			//ステージ１にブレイク
 			//
 			if ((P_x < -20) && (P_x > -280)){
-				if (app_env.isPressKey(GLFW_KEY_ENTER)){ 
-					MODE = 2;
+				if (app_env.isPressKey(GLFW_KEY_ENTER)){
+					GO_MODE2 = true;
+					}
+				if (GO_MODE2){
+					blackout += 2;
+					drawFillBox(-800, -450, 1600, 900, color256(0, 0, 0, blackout));
 
-					// Stage1の変数の初期化
-					P_x = -750;
-					P_y = -200;
-					vy = 0;
+					if (blackout >= 256){
+						MODE = 2;
+						// Stage1の変数の初期化
+						P_x = -750;
+						P_y = -200;
+						vy = 0;
 
-					right = true;
+						right = true;
 
-					B_x = -800;
-					B_y = -250;
-					block_x = 50;
-					block1314 = false;
-					bvy = 0.0;
-					B_y13 = -200;
-					B_y14 = -200;
+						B_x = -800;
+						B_y = -250;
+						block_x = 50;
+						block1314 = false;
+						bvy = 0.0;
+						B_y13 = -200;
+						B_y14 = -200;
 
-					bbvy = 0.0;
-					B_y17 = -200;
-					B_y18 = -200;
-					B_y19 = -200;
-					B_y20 = -200;
+						bbvy = 0.0;
+						B_y17 = -200;
+						B_y18 = -200;
+						B_y19 = -200;
+						B_y20 = -200;
 
-					S_y = -205;
+						S_y = -205;
 
-					bun_move1 = 0;
-					bun_move2 = 0;
-					bun_move3 = 0;
+						bun_move1 = 0;
+						bun_move2 = 0;
+						bun_move3 = 0;
 
-					Ya = false;
-					Ya_y = 0;
-					Ya_vy = 10;
-					Ya_g = 0.18;
-					Ya_Atk = false;
+						Ya = false;
+						Ya_y = 0;
+						Ya_vy = 10;
+						Ya_g = 0.18;
+						Ya_Atk = false;
 
-					is_Ly = false;
-					ly_x = 800;
+						is_Ly = false;
+						ly_x = 800;
 
-					is_Jump = true;
+						is_Jump = true;
 
-					is_Punch = false;
-					swich = false;
+						is_Punch = false;
+						swich = false;
+
+						blackout = 0;
+
+						GO_MODE2 = false;
+					}
 				}
 			}
 	}
@@ -800,6 +826,7 @@ int main() {
 				is_Jump = true;
 				vy = 0;
 				P_y = -200;
+				P_x -= 2.5;
 			}
 			else if (P_x >= 290){ is_Jump = false; }
 		}
@@ -903,6 +930,12 @@ int main() {
 		// Black長方形
 		drawFillBox(-800, -450, 1600, 150, Color(0, 0, 0));
 
+		// 障害をよけて進もう
+		drawTextureBox(-490, -460, 900, 238,
+			0, 0, 1024, 256,
+			syougai,
+			Color(1, 1, 1));
+
 		if (app_env.isPushKey('Z')){
 			P_x = -750;
 			P_y = -200;
@@ -986,27 +1019,107 @@ int main() {
 							 0, 0, 256, 128,
 						     X3,
 							 Color(1, 1, 1));
+				drawTextureBox(-256, -400, 521, 128,
+					0, 0, 1024, 256,
+					uekara,
+					Color(1, 1, 1));
 			}
 			else if (Life == 2){
 				drawTextureBox(0, -170, 200, 100,
-					0, 0, 256, 128,
-					X2,
-					Color(1, 1, 1));
+							 0, 0, 256, 128,
+							 X2,
+							 Color(1, 1, 1));
 			}
 			else if (Life == 1){
 				drawTextureBox(0, -170, 200, 100,
-					0, 0, 256, 128,
-					X1,
+						     0, 0, 256, 128,
+							 X1,
+							 Color(1, 1, 1));
+				drawTextureBox(-200, -380, 512, 128,
+					0, 0, 1024, 256,
+					icanfly,
 					Color(1, 1, 1));
+			}
+			else if (Life == 0){
+				drawTextureBox(0, -170, 200, 100,
+					         0, 0, 256, 128,
+							 X0,
+							 Color(1, 1, 1));
+				drawTextureBox(-500, -350, 1024, 128,
+					0, 0, 2048, 256,
+					konokusoge,
+					Color(1, 1, 1));
+
+				// ブラックアウト
+				blackout += 0.8;
+				drawFillBox(-800, -450, 1600, 900, color256(0, 0, 0, blackout));
+				if (blackout >= 100){
+					drawTextureBox(-256, -128, 512, 256,
+						0, 0, 512, 256,
+						go_stagesentaku,
+						color256(255, 255, 255));
+
+					if (blackout >= 256){
+						MODE = 1;
+
+						// 変数の初期化
+						P_x = -750;
+						P_y = -200;
+						vy = 0;
+
+						right = true;
+
+						B_x = -800;
+						B_y = -250;
+						block_x = 50;
+						block1314 = false;
+						bvy = 0.0;
+						B_y13 = -200;
+						B_y14 = -200;
+
+						bbvy = 0.0;
+						B_y17 = -200;
+						B_y18 = -200;
+						B_y19 = -200;
+						B_y20 = -200;
+
+						S_y = -205;
+
+						bun_move1 = 0;
+						bun_move2 = 0;
+						bun_move3 = 0;
+
+						Ya = false;
+						Ya_y = 0;
+						Ya_vy = 10;
+						Ya_g = 0.18;
+						Ya_Atk = false;
+
+						is_Ly = false;
+						ly_x = 800;
+
+						is_Jump = true;
+
+						is_Punch = false;
+						swich = false;
+
+						blackout = 0;
+
+						Life = 4;
+					}
+
+				}
 			}
 
 
 
-
-			timer += 1;
-			if (timer >= 120){
-			MODE = 2;
-			timer = 0;
+			if (!Life == 0){
+				timer += 1;
+				if (timer >= 120){
+					MODE = 2;
+					timer = 0;
+				}
+			}
 
 			// 変数の初期化
 			P_x = -750;
@@ -1048,7 +1161,6 @@ int main() {
 
 			is_Punch = false;
 			swich = false;
-			}
 	}
 		break;
 	}
