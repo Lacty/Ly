@@ -134,6 +134,7 @@ int main() {
   float bun_move1 = 0;
   float bun_move2 = 0;
   float bun_move3 = 0;
+  float bun_move4 = 0;
 
   bool is_Ly = false;
   float ly_x = 800;
@@ -167,7 +168,13 @@ int main() {
   Texture go_stagesentaku("res/sutagesentaku.png");
 
   Texture syougai("res/syougai.png");
-  
+
+  Texture GameClear("res/GameClear.png");
+  float circle_x = 0;
+  float circle_y = 0;
+  float circle_size = 30;
+  float circle_vy = 2;
+  float circle_g = 0.1;
 
   int timer = 0;
 
@@ -411,6 +418,10 @@ int main() {
 				  MODE = 4;
 				  P_x = -650;
 			  }
+
+			  if (app_env.isPressKey('C')){
+				  MODE = 3;
+			  }
 	}
 	break;
 
@@ -604,6 +615,10 @@ int main() {
 						blackout = 0;
 
 						GO_MODE2 = false;
+
+						circle_size = 30;
+						circle_vy = 2;
+						circle_g = 0.1;
 					}
 				}
 			}
@@ -915,13 +930,18 @@ int main() {
 		}
 
 		// ブーン
+		if (bun_move1 >= 400){ bun_move1 = -450; }
 		bun_move1 += 0.1;
+		if (bun_move2 >= 520){ bun_move2 = -300; }
 		bun_move2 += 0.08;
+		if (bun_move3 >= 750){ bun_move3 = -100; }
 		bun_move3 += 0.09;
+		if (bun_move4 >= 1000){ bun_move4 = 100; }
+		bun_move4 += 0.1;
 		drawTextureBox(2 * bun_move1, std::sin(bun_move1) * 4 + 200, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
 		drawTextureBox(2 * bun_move2 - 250, std::sin(bun_move2) * 4 + 280, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
 		drawTextureBox(2 * bun_move3 - 700, std::sin(bun_move3) * 4 + 180, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
-		drawTextureBox(2 * bun_move2 - 1200, std::sin(bun_move1) * 4 + 220, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
+		drawTextureBox(2 * bun_move4 - 1200, std::sin(bun_move4) * 4 + 220, 512 - 256, 128 - 64, 0, 0, 512, 128, bun, Color(1, 1, 1));
 
 		//
 		//コメント欄
@@ -976,6 +996,10 @@ int main() {
 
 			is_Punch = false;
 			swich = false;
+
+			circle_size = 30;
+			circle_vy = 2;
+			circle_g = 0.1;
 		}
 		
 		// クリア画面へ移動
@@ -989,8 +1013,31 @@ int main() {
 
 	case 3:
 	{
-			  drawTextureBox(-512, -512, 1024, 1024, 0, 0, 512, 512, clear_logo, Color(1, 1, 1));
-			  drawTextureBox(400, -400, 400, 400, 0, 0, 512, 512, clear_sellect, Color(1, 1, 1));
+			  circle_size -= circle_vy;
+			  circle_vy += circle_g;
+			  drawFillCircle(circle_x, circle_y, circle_size, circle_size, 1000, color256(200, 256, 200));
+			  drawFillCircle(circle_x, circle_y, circle_size +  30, circle_size +  30, 1000, color256(256, 256, 256));
+			  drawFillCircle(circle_x, circle_y, circle_size + 180, circle_size + 180, 1000, color256(256, 200, 200));
+			  drawFillCircle(circle_x, circle_y, circle_size + 230, circle_size + 230, 1000, color256(256, 256, 256));
+			  drawFillCircle(circle_x, circle_y, circle_size + 290, circle_size + 290, 1000, color256(200, 200, 256));
+			  drawFillCircle(circle_x, circle_y, circle_size + 320, circle_size + 320, 1000, color256(256, 256, 256));
+			  drawFillCircle(circle_x, circle_y, circle_size + 360, circle_size + 360, 1000, color256(200, 256, 256));
+			  drawFillCircle(circle_x, circle_y, circle_size + 420, circle_size + 420, 1000, color256(256, 256, 256));
+			  drawFillCircle(circle_x, circle_y, circle_size + 500, circle_size + 500, 1000, color256(256, 200, 256));
+			  drawFillCircle(circle_x, circle_y, circle_size + 530, circle_size + 530, 1000, color256(256, 256, 256));
+			  drawFillCircle(circle_x, circle_y, circle_size + 580, circle_size + 580, 1000, color256(200, 180, 220));
+			  if (circle_size <= -2000){
+				  circle_vy = 0;
+				  drawTextureBox(-64, -400, 128, 64,
+					  0, 0, 256, 128,
+					  enter,
+					  Color(1, 1, 1));
+			  }
+
+			  drawTextureBox(-512, -256, 1024, 512,
+				  0, 0, 1024, 512,
+				  GameClear,
+				  Color(1, 1, 1));
 			  if (app_env.isPushKey(GLFW_KEY_ESCAPE)){ return 0; }
 			  if (app_env.isPushKey(GLFW_KEY_ENTER)){ MODE = 1; P_x = -650; }
 	}
@@ -1105,6 +1152,10 @@ int main() {
 
 						blackout = 0;
 
+						circle_size = 30;
+						circle_vy = 2;
+						circle_g = 0.1;
+
 						Life = 4;
 					}
 
@@ -1161,6 +1212,10 @@ int main() {
 
 			is_Punch = false;
 			swich = false;
+
+			circle_size = 30;
+			circle_vy = 2;
+			circle_g = 0.1;
 	}
 		break;
 	}
