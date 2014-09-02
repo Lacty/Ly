@@ -167,6 +167,7 @@ int main() {
   Texture swich1("res/Swich1.png");
   Texture swich2("res/Swich2.png");
   Texture water("res/water.png");
+  Texture GOAL("res/GOAL.png");
 
   Texture youdead("res/you_dead.png");
 
@@ -175,9 +176,14 @@ int main() {
   Texture X2("res/X2.png");
   Texture X1("res/X1.png");
   Texture X0("res/X0.png");
+  bool is_Uekara = false;
   Texture uekara("res/uekara.png");
+  bool is_Dokankara = false;
   Texture dokankara("res/dokankara.png");
+  bool is_Icanfly = false;
   Texture icanfly("res/icanfly.png");
+  bool is_Yokokara = false;
+  Texture yokokara("res/yokokara.png");
   Texture konokusoge("res/konokusoge.png");
   Texture go_stagesentaku("res/sutagesentaku.png");
 
@@ -766,6 +772,7 @@ int main() {
 		if (Ya_y <= -215){ Ya_Atk = false; }
 		if ((P_x >= -600) && (P_x <= -450)&&(Ya_Atk)){
 			Life = Life - 1;
+			is_Uekara = true;
 			MODE = 4;
 		}
 
@@ -809,7 +816,11 @@ int main() {
 			drawTextureBox(ly_x, -30, 128, 64, 0, 0, 128, 64, ly, Color(1, 1, 1));
 		}
 		// Lyあたり判定
-		if ((ly_x <= -150) && (ly_x >= -350) && (P_y >= -65)){ Life = Life - 1; MODE = 4; }
+		if ((ly_x <= -150) && (ly_x >= -350) && (P_y >= -65)){ 
+			Life = Life - 1;
+			is_Yokokara = true;
+			MODE = 4; 
+		}
 
 
 		// どかん
@@ -946,6 +957,11 @@ int main() {
 				block, Color(1, 1, 1));
 			drawTextureBox(B_x + 31 * block_x, B_y, 50, 50, 0, 0, 64, 64,
 				block, Color(1, 1, 1));
+
+			drawTextureBox(600, -200, 200, 200,
+				0, 0, 256, 256,
+				GOAL,
+				Color(1, 1, 1));
 		}
 
 		// 水の処理
@@ -1062,6 +1078,11 @@ int main() {
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 			W_g = 0.1;
+
+			is_Uekara = false;
+			is_Yokokara = false;
+			is_Dokankara = false;
+			is_Icanfly = false;
 		}
 		
 		// クリア画面へ移動
@@ -1074,11 +1095,22 @@ int main() {
 		}
 
 		// 落下死とする
-		if (P_y <= -400){ Life = Life - 1; MODE = 4; }
-		if (P_y >= 500){ Life = Life - 1; MODE = 4; }
+		if (P_y <= -400){ 
+			Life = Life - 1;
+			is_Icanfly = true;
+			MODE = 4;
+		}
+		if (P_y >= 500){ 
+			Life = Life - 1;
+			is_Dokankara = true;
+			MODE = 4;
+		}
 	}
 	break;
 
+	//
+	// クリア画面
+	//
 	case 3:
 	{
 			  circle_size -= circle_vy;
@@ -1111,6 +1143,9 @@ int main() {
 	}
 	break;
 
+	//
+	// Drad画面
+	//
 	case 4:
 	{
 
@@ -1134,26 +1169,90 @@ int main() {
 							 0, 0, 256, 128,
 						     X3,
 							 Color(1, 1, 1));
-				drawTextureBox(-256, -400, 521, 128,
-					0, 0, 1024, 256,
-					uekara,
-					Color(1, 1, 1));
+				if (is_Uekara){
+					drawTextureBox(-256, -400, 521, 128,
+						0, 0, 1024, 256,
+						uekara,
+						Color(1, 1, 1));
+				}
+				if (is_Yokokara){
+					drawTextureBox(-256, -380, 512, 128,
+						0, 0, 1024, 256,
+						yokokara,
+						Color(1, 1, 1));
+				}
+				if (is_Dokankara){
+					drawTextureBox(-256, -380, 512, 128,
+						0, 0, 1024, 256,
+						dokankara,
+						Color(1, 1, 1));
+				}
+				if (is_Icanfly){
+					drawTextureBox(-200, -380, 512, 128,
+						0, 0, 1024, 256,
+						icanfly,
+						Color(1, 1, 1));
+				}
 			}
 			else if (Life == 2){
 				drawTextureBox(0, -170, 200, 100,
 							 0, 0, 256, 128,
 							 X2,
 							 Color(1, 1, 1));
+				if (is_Uekara){
+					drawTextureBox(-256, -400, 521, 128,
+						0, 0, 1024, 256,
+						uekara,
+						Color(1, 1, 1));
+				}
+				if (is_Yokokara){
+					drawTextureBox(-256, -380, 512, 128,
+						0, 0, 1024, 256,
+						yokokara,
+						Color(1, 1, 1));
+				}
+				if (is_Dokankara){
+					drawTextureBox(-256, -380, 512, 128,
+						0, 0, 1024, 256,
+						dokankara,
+						Color(1, 1, 1));
+				}
+				if (is_Icanfly){
+					drawTextureBox(-200, -380, 512, 128,
+						0, 0, 1024, 256,
+						icanfly,
+						Color(1, 1, 1));
+				}
 			}
 			else if (Life == 1){
 				drawTextureBox(0, -170, 200, 100,
 						     0, 0, 256, 128,
 							 X1,
 							 Color(1, 1, 1));
-				drawTextureBox(-200, -380, 512, 128,
-					0, 0, 1024, 256,
-					icanfly,
-					Color(1, 1, 1));
+				if (is_Uekara){
+					drawTextureBox(-256, -400, 521, 128,
+						0, 0, 1024, 256,
+						uekara,
+						Color(1, 1, 1));
+				}
+				if (is_Yokokara){
+					drawTextureBox(-256, -380, 512, 128,
+						0, 0, 1024, 256,
+						yokokara,
+						Color(1, 1, 1));
+				}
+				if (is_Dokankara){
+					drawTextureBox(-256, -380, 512, 128,
+						0, 0, 1024, 256,
+						dokankara,
+						Color(1, 1, 1));
+				}
+				if (is_Icanfly){
+					drawTextureBox(-200, -380, 512, 128,
+						0, 0, 1024, 256,
+						icanfly,
+						Color(1, 1, 1));
+				}
 			}
 			else if (Life == 0){
 				drawTextureBox(0, -170, 200, 100,
@@ -1235,6 +1334,11 @@ int main() {
 							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 							0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 						W_g = 0.1;
+
+						is_Uekara = false;
+						is_Yokokara = false;
+						is_Dokankara = false;
+						is_Icanfly = false;
 					}
 
 				}
@@ -1247,6 +1351,10 @@ int main() {
 				if (timer >= 120){
 					MODE = 2;
 					timer = 0;
+					is_Uekara = false;
+					is_Yokokara = false;
+					is_Dokankara = false;
+					is_Icanfly = false;
 				}
 			}
 
