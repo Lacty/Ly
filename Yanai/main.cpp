@@ -200,12 +200,25 @@ int main() {
 
   right = true;
 
+  // BGM,SE
+  // タイトル画面
+  Media minecraft("res/Minecraft.wav");
+  float gain_minecraft = 1.00;
+  Media se_bom("res/se_bom.wav");
+  // プレイ画面
+  Media kirby("res/Kirby.wav");
+  float gain_kirby = 1.00;
+  Media se_jump("res/se_jump.wav");
+  Media se_ya("res/se_ya.wav");
+  Media se_dokan("res/se_dokan.wav");
+  Media se_switch("res/se_switch.wav");
+
   int MODE = 0;
 
   while (1) {
     // アプリウインドウが閉じられたらプログラムを終了
     if (!app_env.isOpen()) return 0;
-    
+
     // 描画準備
     app_env.setupDraw();
 
@@ -213,6 +226,12 @@ int main() {
 	switch (MODE){
 	case 0:
 	{
+		{//BGM,SE
+			kirby.stop();
+			if (!minecraft.isPlaying()) {
+				minecraft.play();
+			}
+		}
 		{   // 背景
 			// 地面
 			drawTextureBox(-830, -400, 2048, 1024,
@@ -360,7 +379,10 @@ int main() {
 
 
 			// 隕石落下後の処理
+			// 隕石爆発SE
 			if ((meteo_move > 500) && (meteo_move < 750)){
+				// SE
+				se_bom.play();
 				drawTextureBox(270, -265, 512, 512,
 					0, 0, 512, 512,
 					bakuhatu,
@@ -447,6 +469,12 @@ int main() {
 
 	case 1:
 	{
+			  // BGM
+			  kirby.stop();
+			  if (!minecraft.isPlaying()) {
+				  minecraft.play();
+				  minecraft.gain(1);
+			  }
 			//
 			//操作キャラの処理
 			//
@@ -586,8 +614,13 @@ int main() {
 					GO_MODE2 = true;
 					}
 				if (GO_MODE2){
+					minecraft.gain(gain_minecraft);
+					gain_minecraft -= 0.01;
+
+
 					blackout += 2;
 					drawFillBox(-800, -450, 1600, 900, color256(0, 0, 0, blackout));
+
 
 					if (blackout >= 256){
 						MODE = 2;
@@ -649,6 +682,8 @@ int main() {
 							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 							0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 						W_g = 0.1;
+
+						gain_minecraft = 1;
 					}
 				}
 			}
@@ -656,6 +691,13 @@ int main() {
 	break;
 
 	case 2:
+		//BGM
+			minecraft.stop();
+		if (!kirby.isPlaying()) {
+			kirby.play();
+			kirby.gain(0.5);
+		}
+
 		// キャラクターにかかる重力
 		P_y -= vy;
 		vy += g;
@@ -686,6 +728,11 @@ int main() {
 			S_y -= bbvy;
 		}
 	{
+		if ((is_Jump) && (app_env.isPushKey(GLFW_KEY_SPACE))){
+			se_jump.play();
+		}
+
+
 		if (app_env.isPressKey('D')) {  // Dを押したら右に移動
 			P_x += 2;
 			right = true;
@@ -768,7 +815,7 @@ int main() {
 				Color(1, 1, 1));
 		}
 		// 矢あたり判定
-		if ((Ya_y <= -160) && (Ya_y >= -210)){ Ya_Atk = true; }
+		if ((Ya_y <= -160) && (Ya_y >= -210)){ Ya_Atk = true; se_ya.play(); }
 		if (Ya_y <= -215){ Ya_Atk = false; }
 		if ((P_x >= -600) && (P_x <= -450)&&(Ya_Atk)){
 			Life = Life - 1;
@@ -829,7 +876,7 @@ int main() {
 		if ((P_x > -121) && (P_x < -10) && (P_y < -70)){
 			vy = 0;
 			P_y = -70;
-			if (app_env.isPushKey('S')){ is_Punch = true; }
+			if (app_env.isPushKey('S')){ is_Punch = true; se_dokan.play(); }
 			// Sを押したときパンチをtrueにする
 		}
 		if ((P_x > -121) && (P_x < -10) && (P_y <= -69)){ is_Jump = true; }
@@ -866,11 +913,13 @@ int main() {
 			else if (P_x >= -10){ is_Jump = false; }
 		}
 
-		//スイッチ
+		//スイッチ&SE
 		if ((P_x >= 60) && (P_x <= 190) && (P_y >= -220) && (P_y <= 140)){
 			if (!swich){
 				if (app_env.isPushKey(GLFW_KEY_ENTER)){
 					swich = true;
+					// SE
+					se_switch.play();
 				}
 			}
 		}
@@ -1113,6 +1162,10 @@ int main() {
 	//
 	case 3:
 	{
+			  // BGM down
+			  gain_kirby -= 0.01;
+			  kirby.gain(gain_kirby);
+
 			  circle_size -= circle_vy;
 			  circle_vy += circle_g;
 			  drawFillCircle(circle_x, circle_y, circle_size, circle_size, 1000, color256(200, 256, 200));
@@ -1264,8 +1317,12 @@ int main() {
 					konokusoge,
 					Color(1, 1, 1));
 
+				// BGM down
+				gain_kirby -= 0.01;
+				kirby.gain(gain_kirby);
+
 				// ブラックアウト
-				blackout += 0.8;
+				blackout += 1.2;
 				drawFillBox(-800, -450, 1600, 900, color256(0, 0, 0, blackout));
 				if (blackout >= 100){
 					drawTextureBox(-256, -128, 512, 256,
@@ -1339,6 +1396,8 @@ int main() {
 						is_Yokokara = false;
 						is_Dokankara = false;
 						is_Icanfly = false;
+
+						gain_minecraft = 1;
 					}
 
 				}
@@ -1384,6 +1443,7 @@ int main() {
 			bun_move1 = 0;
 			bun_move2 = 0;
 			bun_move3 = 0;
+			bun_move4 = 0;
 
 			Ya = false;
 			Ya_y = 0;
