@@ -37,8 +37,8 @@ void draw(){
       text(mon10,width/2-10,height/2+26);
       text(mon1,width/2+30,height/2+26);
       text("/",width/2+60,height/2+23);
-      text(mon10,width/2+85,height/2+26);
-      text(mon1,width/2+125,height/2+26);
+      text(day10,width/2+85,height/2+26);
+      text(day1,width/2+125,height/2+26);
     }
   }
 }
@@ -47,6 +47,6 @@ int count;
 
 void mousePressed(){
   MODE = 1;
-  count = second()+2;
+  count = (second()+3)%60;
   println(count);
 }
