@@ -55,12 +55,14 @@ Block block = {
 };
 
 // 描画する部分ｗ　まだ手探り状態
-void PlayerMove(AppEnv& app_env, Player& player, Block& block){
+void PlayerMove(AppEnv& app_env, Player& player){
 	if (app_env.isPressKey('D')){ player.x1 += 2; }
 	if (app_env.isPressKey('A')){ player.x1 -= 2; }
 	if (app_env.isPressKey('W')){ player.y1 += 2; }
 	if (app_env.isPressKey('S')){ player.y1 -= 2; }
+}
 
+void Draw(){
 	drawFillBox(block.x1, block.y1, block.x2, block.y2, Color(1, 0, 1));
 
 	drawFillBox(player.x1, player.y1, player.x2, player.y2,
@@ -84,8 +86,9 @@ int main() {
     app_env.setupDraw();
 
 	// 矩形の描画＆プレイヤーの動作
-	PlayerMove(app_env, player, block);
+	PlayerMove(app_env, player);
 
+	Draw();
 
     //
     // 描画処理はここでおこなう
