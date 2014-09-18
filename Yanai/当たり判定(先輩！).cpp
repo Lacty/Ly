@@ -42,11 +42,29 @@ struct Block {
 	    x2, y2;
 };
 
-void PlayerMove(AppEnv& app_env, Player& player){
+// 移動する(プレイヤー)オブジェクトの初期化
+Player player = {
+	0, 0,
+	20, 20
+};
+
+// (ブロック)オブジェクトの初期化
+Block block = {
+	0, 0,
+	40, 40
+};
+
+// 描画する部分ｗ　まだ手探り状態
+void PlayerMove(AppEnv& app_env, Player& player, Block& block){
 	if (app_env.isPressKey('D')){ player.x1 += 2; }
 	if (app_env.isPressKey('A')){ player.x1 -= 2; }
 	if (app_env.isPressKey('W')){ player.y1 += 2; }
 	if (app_env.isPressKey('S')){ player.y1 -= 2; }
+
+	drawFillBox(block.x1, block.y1, block.x2, block.y2, Color(1, 0, 1));
+
+	drawFillBox(player.x1, player.y1, player.x2, player.y2,
+		Color(0, Hit(player.x1, player.y1, player.x2, player.y2, block.x1, block.y1, block.x2, block.y2), 1));
 }
 
 // 
@@ -57,18 +75,6 @@ int main() {
   AppEnv app_env(Window::WIDTH, Window::HEIGHT,
                  false, false);
 
-  // 移動する(プレイヤー)オブジェクトを用意
-  Player player = {
-	  0, 0,
-	  20, 20
-  };
-
-  // (ブロック)オブジェクトを用意
-  Block block = {
-	  0, 0,
-	  40, 40
-  };
-
   while (1) {
     // アプリウインドウが閉じられたらプログラムを終了
     if (!app_env.isOpen()) return 0;
@@ -77,12 +83,8 @@ int main() {
     // 描画準備
     app_env.setupDraw();
 
-	PlayerMove(app_env, player);
-
-	drawFillBox(block.x1, block.y1, block.x2, block.y2, Color(1, 0, 1));
-    
-	drawFillBox(player.x1, player.y1, player.x2, player.y2,
-		Color(0, Hit(player.x1, player.y1, player.x2, player.y2, block.x1, block.y1, block.x2, block.y2), 1));
+	// 矩形の描画＆プレイヤーの動作
+	PlayerMove(app_env, player, block);
 
 
     //
