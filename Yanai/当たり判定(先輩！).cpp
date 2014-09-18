@@ -42,6 +42,13 @@ struct Block {
 	    x2, y2;
 };
 
+void PlayerMove(AppEnv& app_env, Player& player){
+	if (app_env.isPressKey('D')){ player.x1 += 2; }
+	if (app_env.isPressKey('A')){ player.x1 -= 2; }
+	if (app_env.isPressKey('W')){ player.y1 += 2; }
+	if (app_env.isPressKey('S')){ player.y1 -= 2; }
+}
+
 // 
 // メインプログラム
 // 
@@ -70,10 +77,7 @@ int main() {
     // 描画準備
     app_env.setupDraw();
 
-	if (app_env.isPressKey('D')){ player.x1 += 2; }
-	if (app_env.isPressKey('A')){ player.x1 -= 2; }
-	if (app_env.isPressKey('W')){ player.y1 += 2; }
-	if (app_env.isPressKey('S')){ player.y1 -= 2; }
+	PlayerMove(app_env, player);
 
 	drawFillBox(block.x1, block.y1, block.x2, block.y2, Color(1, 0, 1));
     
