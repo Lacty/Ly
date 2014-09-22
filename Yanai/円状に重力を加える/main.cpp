@@ -28,13 +28,27 @@ struct Object{
 Object earth(0, 0, 50, 300);
 Object player(0, 55, 5, 100);
 
-float angle = 0;
+float angle = 1.55;
+float ground = 110;
+float gr = 0.15;
+float vy = 0.0;
 void PlayerMove(AppEnv& app_env){
-	player.x = 110 * cos(angle) / 2;
-	player.y = 110 * sin(angle) / 2;
+	player.x = ground * cos(angle) / 2;
+	player.y = ground * sin(angle) / 2;
+	
 	// 角度を進める
-	if (app_env.isPressKey('D')){ angle -= 0.08; }
-	if (app_env.isPressKey('A')){ angle += 0.08; }
+	if (app_env.isPressKey('D')){ angle -= 0.03; }
+	if (app_env.isPressKey('A')){ angle += 0.03; }
+
+	// ジャンプさせる
+	if (app_env.isPushKey(GLFW_KEY_SPACE)){ vy = -3.5; }
+}
+
+void PlayerGravity(AppEnv& app_env){
+	ground -= vy;
+	vy += gr;
+
+	if (ground <= 110){ ground = 110; }
 }
 
 void draw(){
@@ -63,6 +77,8 @@ int main() {
     app_env.setupDraw();
 
 	PlayerMove(app_env);
+
+	PlayerGravity(app_env);
 
 	draw();
 
