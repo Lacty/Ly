@@ -30,9 +30,7 @@ struct Object{
 Object earth(0, 0, 50, 300, 0, 0);
 Object player(0, 55, 5, 100, 0.4, 0);
 
-float angle = 1.55;
-float ground = 110;
-void PlayerMove(AppEnv& app_env){
+void PlayerMove(AppEnv& app_env, float& ground, float& angle){
 	player.x = ground * cos(angle) / 2;
 	player.y = ground * sin(angle) / 2;
 	
@@ -44,7 +42,7 @@ void PlayerMove(AppEnv& app_env){
 	if (app_env.isPushKey(GLFW_KEY_SPACE)){ player.vy = -5; }
 }
 
-void PlayerGravity(AppEnv& app_env){
+void PlayerGravity(AppEnv& app_env, float& ground){
 	ground -= player.vy;
 	player.vy += player.gr;
 
@@ -76,9 +74,12 @@ int main() {
     // 描画準備
     app_env.setupDraw();
 
-	PlayerMove(app_env);
+	float angle = 1.55;
+	float ground = 110;
 
-	PlayerGravity(app_env);
+	PlayerMove(app_env, ground, angle);
+
+	PlayerGravity(app_env, ground);
 
 	draw();
 
