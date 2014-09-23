@@ -22,8 +22,8 @@ struct Object{
 		this->vy = vy;
 	}
 	float x, y;
-	float radius;
-	float division;
+	float radius;      // 半径
+	float division;    // この値が大きいと円が滑らかになる
 	float gr, vy;
 };
 
@@ -74,8 +74,10 @@ int main() {
     // 描画準備
     app_env.setupDraw();
 
-	float angle = 1.55;
-	float ground = 110;
+
+	float angle = 1.55;                                  // キャラの角度（位置）
+	const float ground = earth.radius + player.radius/2;     // 中心円の半径＋キャラクターの半径
+	                                                   // 変化しないのでconstにしてみた＆表記方法を変更
 
 	PlayerMove(app_env, ground, angle);
 
