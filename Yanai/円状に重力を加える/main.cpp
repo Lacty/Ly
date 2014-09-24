@@ -35,11 +35,11 @@ void PlayerMove(AppEnv& app_env, float& ground, float& angle){
 	player.y = ground * sin(angle) / 2;
 	
 	// 角度を進める
-	if (app_env.isPressKey('D')){ angle -= 0.03; }
-	if (app_env.isPressKey('A')){ angle += 0.03; }
+	const if (app_env.isPressKey('D')){ angle -= 0.03; }
+	const if (app_env.isPressKey('A')){ angle += 0.03; }
 
 	// ジャンプさせる
-	if (app_env.isPushKey(GLFW_KEY_SPACE)){ player.vy = -5; }
+	const if (app_env.isPushKey(GLFW_KEY_SPACE)){ player.vy = -5; }
 }
 
 void PlayerGravity(AppEnv& app_env, float& ground){
