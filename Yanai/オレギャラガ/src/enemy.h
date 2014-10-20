@@ -8,6 +8,7 @@
 // “G‚ðoŒ»‚³‚¹‚é‚¼‚¡I
 //
 
+
 bool Hit(float shot_x, float shot_y,
 	float x, float y, float width, float height){
 	if (shot_x > x){
@@ -23,28 +24,37 @@ bool Hit(float shot_x, float shot_y,
 	return false;
 }
 
-int red = 1;
 
 void drawEnemy(AppEnv& app_env, Enemy enemy[], Shot shot_data[]){
+	/*
 	for (int i = 0; i < SHOT_MAX; ++i){
 		if (shot_data[i].active) {
-			if (Hit(shot_data[i].x, shot_data[i].y, enemy[0].x, enemy[0].y, enemy[0].width, enemy[0].height)){
-				red = 0;
+			for (int e = 0; e < 3; ++e){
+				if (Hit(shot_data[i].x, shot_data[i].y, enemy[e].x, enemy[e].y, enemy[e].width, enemy[e].height)){
+					enemy[0].isHit = true;
+					shot_data[i].active = true;
+				}
 			}
-			else red = 1;
+		}
+	}*/
+
+
+	for (int e = 0; e < 4; ++e){
+		// ’e‚Æ“G‚Ì‚ ‚½‚è”»’è
+		for (int i = 0; i < SHOT_MAX; ++i){
+			if ((shot_data[i].active)&&(!enemy[e].isHit)) {
+				if (Hit(shot_data[i].x, shot_data[i].y, enemy[e].x, enemy[e].y, enemy[e].width, enemy[e].height)){
+					enemy[e].isHit = true;
+					shot_data[i].active = false;
+				}
+			}
+		}
+
+		// “G‚Ì•`‰æ
+		if (enemy[e].isHit == false){
+			drawFillBox(enemy[e].x, enemy[e].y,
+				enemy[e].width, enemy[e].height,
+				Color(1, 1, 1));
 		}
 	}
-
-
-	drawFillBox(enemy[0].x, enemy[0].y,
-		enemy[0].width, enemy[0].height,
-		Color(red, 1, 1));
-
-	drawFillBox(enemy[1].x, enemy[1].y,
-		enemy[1].width, enemy[1].height,
-		Color(red, 1, 1));
-
-	drawFillBox(enemy[2].x, enemy[2].y,
-		enemy[2].width, enemy[2].height,
-		Color(red, 1, 1));
 }

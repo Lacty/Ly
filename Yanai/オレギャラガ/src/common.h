@@ -24,14 +24,16 @@ Player player = {
 struct Enemy{
 	float x, y;
 	float width, height;
+	bool isHit;
 };
 
 
 // エネミーのオブジェクトを作成
-Enemy enemy[3] = {
-	0, 0, 30, 30,
-	70, 30, 30, 30,
-	-100, -20, 30, 30,
+Enemy enemy[4] = {
+	30, 300, 40, 40, false,
+	-70, 300, 40, 40, false,
+	60, 200, 40, 40, false,
+	-100, 200, 40, 40, false,
 };
 
 

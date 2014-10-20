@@ -60,8 +60,7 @@ int main() {
 	playerShots(app_env, shot_data, player);
 
 	// エネミーの描画
-	drawEnemy(app_env, enemy, shot_data); 
-
+	drawEnemy(app_env, enemy, shot_data);
     
     // 画面更新
     app_env.update();
