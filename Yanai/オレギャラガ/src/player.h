@@ -4,6 +4,16 @@
 #include "common.h"
 
 
+// プレイヤーの構造体
+struct Player{
+	float x, y;
+};
+
+// プレイヤーのオブジェクトを作成
+Player player = {
+	-32, -410
+};
+
 // 自機の描画
 void drawPlayer(Texture& ziki, Player& player){
 	drawTextureBox(player.x, player.y, 100, 100,
@@ -17,6 +27,8 @@ void drawPlayer(Texture& ziki, Player& player){
 void playerMovement(AppEnv& app_env, Player& player, float& move){
 	if (app_env.isPressKey('A')) player.x -= move;
 	if (app_env.isPressKey('D')) player.x += move;
+
+	// 画面から出ないように制御
 	if (player.x <= -WIDTH / 2) player.x = -WIDTH / 2;
 	if (player.x >= WIDTH / 2 - 64) player.x = WIDTH / 2 - 64;
 }
@@ -31,6 +43,9 @@ void playerShots(AppEnv& app_env, Shot shot_data[], Player& player){
 			if (!shot_data[i].active) {
 				// 未使用→使用中
 				shot_data[i].active = true;
+
+				// 撃った弾の数を足す
+				MAX_SHOT = MAX_SHOT + 1;
 
 				// 弾の初期値は自機より
 				shot_data[i].x = player.x + 32;

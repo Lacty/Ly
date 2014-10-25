@@ -10,31 +10,6 @@ enum Window {
 	HEIGHT = 850
 };
 
-// プレイヤーの構造体
-struct Player{
-	float x, y;
-};
-
-// プレイヤーのオブジェクトを作成
-Player player = {
-	-32, -410
-};
-
-// エネミーの構造体
-struct Enemy{
-	float x, y;
-	float width, height;
-	bool isHit;
-};
-
-
-// エネミーのオブジェクトを作成
-Enemy enemy[4] = {
-	30, 300, 40, 40, false,
-	-70, 300, 40, 40, false,
-	60, 200, 40, 40, false,
-	-100, 200, 40, 40, false,
-};
 
 
 // 最大弾数を定義
@@ -51,6 +26,11 @@ struct Shot{
 
 // 弾を配列で用意
 Shot shot_data[SHOT_MAX];
+
+// 弾を
+int MAX_SHOT;                    // 撃った数
+int MAX_HIT;                    // 当たった数
+int MAX_MISS = MAX_SHOT - MAX_HIT;     // 外した数
 
 
 // 背景の描画
