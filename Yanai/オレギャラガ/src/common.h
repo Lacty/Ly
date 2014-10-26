@@ -11,7 +11,6 @@ enum Window {
 };
 
 
-
 // Å‘å’e”‚ğ’è‹`
 enum  {
 	SHOT_MAX = 2
