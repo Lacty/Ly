@@ -4,8 +4,8 @@
 #include "lib/appEnv.hpp"
 
 struct Player{
-	float x, y;
-	float width, height;
+	int x, y;
+	int width, height;
 };
 
 Player player{
