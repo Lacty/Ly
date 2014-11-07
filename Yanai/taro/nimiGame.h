@@ -1,0 +1,14 @@
+
+#pragma once
+#include "lib/defines.hpp"
+#include "lib/appEnv.hpp"
+#include "nimiPlayer.h"
+#include "nimiMarron.h"
+
+//	ÉQÅ[ÉÄÇÃï`âÊ
+void nimiGame(AppEnv& app_env){
+	app_env.bgColor(Color(1, 1, 1));
+
+	drawMarron();
+	drawPlayer(app_env);
+}

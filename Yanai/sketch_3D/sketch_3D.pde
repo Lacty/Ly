@@ -12,8 +12,7 @@ void draw(){
   rotateY(angle);
   noFill();
   box(60);
-  //lights();
-  //sphere(30);
+  fill(200, 130, 200);
   textSize(30);
   text("Ly", -15, 10);
 }
