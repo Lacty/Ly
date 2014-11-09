@@ -14,7 +14,9 @@ Player player{
 };
 
 //	物体を移動させるときの値
-const int move = 3;
+//	新機能でプレイヤーの移動スピードを上げることもあるかもしれないので
+//	constは外しておく
+int move = 3;
 
 //	プレイヤーの移動制御
 void playerMove(AppEnv& app_env){

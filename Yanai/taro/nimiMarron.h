@@ -5,10 +5,13 @@
 #include "nimiPlayer.h"
 #include "lib/random.hpp"
 
+
 //	commonに入れる変数
 //	仮にlifeとしておく
 int life = 0;
 
+//	栗を出現させるトリガー
+static bool trigger = false;
 
 //	ミニゲームで獲得するスコアを保存する変数
 int nimiScore = 0;
@@ -23,8 +26,9 @@ struct Marron{
 	float vy;
 };
 
+//	栗の最大数を定義
 enum  {
-	MARRON_MAX = 20
+	MARRON_MAX = 40
 };
 
 //	Marronを配列で用意
@@ -41,7 +45,29 @@ Marron marron[MARRON_MAX] = {
 	{ false, 0, 300, 20, 20, 1, 0 },
 
 	{ false, 0, 300, 20, 20, 1, 0 },
-	{ false, 0, 300, 20, 20, 1, 0},
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
+
+	{ false, 0, 300, 20, 20, 1, 0 },
+	{ false, 0, 300, 20, 20, 1, 0 },
 	{ false, 0, 300, 20, 20, 1, 0 },
 	{ false, 0, 300, 20, 20, 1, 0 },
 	{ false, 0, 300, 20, 20, 1, 0 },
@@ -52,6 +78,7 @@ Marron marron[MARRON_MAX] = {
 	{ false, 0, 300, 20, 20, 1, 0 },
 };
 
+//	あたり判定をboolで返す
 bool isHit(int player_x, int player_y, int player_width, int player_height,
 	int object_x, int object_y, int object_width, int object_height){
 	if (player_x + player_width > object_x){
@@ -68,6 +95,41 @@ bool isHit(int player_x, int player_y, int player_width, int player_height,
 	return false;
 }
 
+
+//	栗を出現させるトリガー
+void marronTrigger(){
+	//	栗を落下させるトリガーとなる変数
+	static float trigger_count = 0;
+	static float COUNT = 1;
+
+	//	triggerをtrueにする条件
+	trigger_count += COUNT;
+	if (trigger_count >= 60){
+		trigger = true;
+
+		//	trigger_count:0にカウントを初期化
+		trigger_count = 0;
+	}
+
+	//	栗を一定の数獲得するごとに
+	//	出現スピードを上げる
+	if (nimiScore == 5){
+		COUNT = 1.5;
+	}
+	else if (nimiScore == 15){
+		COUNT = 2;
+	}
+	else if (nimiScore == 25){
+		COUNT = 3.5;
+	}
+	else if (nimiScore == 40){
+		COUNT = 5;
+	}
+
+}
+
+
+//	栗の移動制御
 void marronMove(AppEnv& app_env){
 
 	//	重力発生機
@@ -81,7 +143,7 @@ void marronMove(AppEnv& app_env){
 	Random r;
 
 	//	栗を出現させる
-	if (app_env.isPushKey(GLFW_KEY_ENTER)){
+	if (trigger){
 		for (int m = 0; m < MARRON_MAX; ++m){
 			if (!marron[m].active){
 				marron[m].active = true;
@@ -89,6 +151,8 @@ void marronMove(AppEnv& app_env){
 				//	xの初期値をランダムで決める
 				r.setSeed(time);
 				marron[m].x = r.fromFirstToLast(-500, 480);
+
+				trigger = false;
 				break;
 			}
 		}
@@ -136,6 +200,7 @@ void pointGeter(){
 //	栗の描画
 void drawMarron(AppEnv& app_env){
 
+	marronTrigger();
 	marronMove(app_env);
 	pointGeter();
 
