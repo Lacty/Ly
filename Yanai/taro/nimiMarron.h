@@ -4,17 +4,11 @@
 #include "lib/appEnv.hpp"
 #include "nimiPlayer.h"
 #include "lib/random.hpp"
+#include "common.h"
 
-
-//	commonに入れる変数
-//	仮にlifeとしておく
-int life = 0;
 
 //	栗を出現させるトリガー
 static bool trigger = false;
-
-//	ミニゲームで獲得するスコアを保存する変数
-int nimiScore = 0;
 
 struct Marron{
 	bool active;
@@ -102,6 +96,8 @@ void marronTrigger(){
 	static float trigger_count = 0;
 	static float COUNT = 1;
 
+	static int MODE = 0;
+
 	//	triggerをtrueにする条件
 	trigger_count += COUNT;
 	if (trigger_count >= 60){
@@ -114,16 +110,52 @@ void marronTrigger(){
 	//	栗を一定の数獲得するごとに
 	//	出現スピードを上げる
 	if (nimiScore == 5){
-		COUNT = 1.5;
+		MODE = 1;
 	}
 	else if (nimiScore == 15){
-		COUNT = 2;
+		MODE = 2;
 	}
 	else if (nimiScore == 25){
-		COUNT = 3.5;
+		MODE = 3;
 	}
 	else if (nimiScore == 40){
-		COUNT = 5;
+		MODE = 4;
+	}
+	else if (nimiScore == 60){
+		MODE = 5;
+	}
+	else if (nimiScore == 100){
+		MODE = 6;
+	}
+
+	switch (MODE){
+		case 0:{
+			COUNT = 1;
+		}break;
+	
+		case 1:{
+			COUNT = 1.5;
+		}break;
+		
+		case 2:{
+			COUNT = 2.5;
+		}break;
+	
+		case 3:{
+			COUNT = 4;
+		}break;
+	
+		case 4:{
+			COUNT = 5.5;
+		}break;
+
+		case 5:{
+			COUNT = 7;
+		}
+
+		case 6:{
+			COUNT = 10;
+		}
 	}
 
 }
@@ -133,14 +165,20 @@ void marronTrigger(){
 void marronMove(AppEnv& app_env){
 
 	//	重力発生機
-	static float g = 0.1;
+	static double g = 0.1;
 	static float vy[MARRON_MAX] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	//	ランダム発生機
 	static int time = 0;
-	time++;
 	Random r;
+
+	//	完全ランダムのための処理
+	//	ランダムにタイム
+	if (!isReady){
+		time++;
+		r.setSeed(time);
+	}
 
 	//	栗を出現させる
 	if (trigger){
@@ -149,6 +187,7 @@ void marronMove(AppEnv& app_env){
 				marron[m].active = true;
 				
 				//	xの初期値をランダムで決める
+				time++;
 				r.setSeed(time);
 				marron[m].x = r.fromFirstToLast(-500, 480);
 
@@ -158,25 +197,26 @@ void marronMove(AppEnv& app_env){
 		}
 	}
 
-
+	//	isReadyがtrueの時
 	//	栗に重力を足す
-	for (int m = 0; m < MARRON_MAX; ++m){
-		if (marron[m].active){
-			marron[m].vy += g;
-			marron[m].y -= marron[m].vy;
+	if (isReady){
+		for (int m = 0; m < MARRON_MAX; ++m){
+			if (marron[m].active){
+				marron[m].vy += g;
+				marron[m].y -= marron[m].vy;
 
-			//	画面外にでたら消す（アクティブをfalseに
-			if (marron[m].y < -310){
-				marron[m].active = false;
+				//	画面外にでたら消す（アクティブをfalseに
+				if (marron[m].y < -310){
+					marron[m].active = false;
+				}
+			}
+			else{
+				//	画面外にでたら栗の位置を初期化
+				marron[m].y = 300;
+				marron[m].vy = 0;
 			}
 		}
-		else{
-			//	画面外にでたら栗の位置を初期化
-			marron[m].y = 300;
-			marron[m].vy = 0;
-		}
 	}
-
 }
 
 //	スコアを獲得
@@ -190,19 +230,22 @@ void pointGeter(){
 
 				//	獲得した栗のポイントを
 				//	スコアに加算させる
-				nimiScore = nimiScore + marron[m].point;
+				//	PowerPointで取得するポイントを変更させる
+				//	nimiPlayer.h参照（パワーアップの作用）
+				nimiScore = nimiScore + marron[m].point*PowerPoint;
 			}
 		}
 	}
-
 }
 
 //	栗の描画
 void drawMarron(AppEnv& app_env){
-
-	marronTrigger();
+	if (isReady){
+		marronTrigger();
+		pointGeter();
+	}
+	//	完全ランダムになるようにMoveを外しておく
 	marronMove(app_env);
-	pointGeter();
 
 	for (int m = 0; m < MARRON_MAX; ++m){
 		//	アクティブなら描画
