@@ -26,9 +26,9 @@ void draw(){
   background(100);
   //println(ifield_x);
   
-  for (int i = 0; i < sideCells; i++){
-    if ((bfield_x[i])&&(bfield_y[i])){
-      rect(ifield_x[i], ifield_y[i], cellSize, cellSize);
+  for (int i = 0; i < sideCells*sideCells; i++){
+    if ((bfield_x[i/sideCells])&&(bfield_y[i%sideCells])){
+      rect(ifield_x[i/sideCells], ifield_y[i%sideCells], cellSize, cellSize);
     }
   }
 }
