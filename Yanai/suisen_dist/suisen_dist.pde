@@ -4,7 +4,7 @@ void setup(){
 
 float linX1 = 50;
 float linY1 = 0;
-float linX2 = 200;
+float linX2 = 150;
 float linY2 = 300;
 
 float posX, posY;
@@ -39,12 +39,10 @@ float y(float a, float b, float posX, float posY){
   return y;
 }
 
-float kyori(float posX, float posY){
-  float x1 = 0;
-  float y1 = 0;
+float kyori(float x, float y, float posX, float posY){
   float distance;
   
-  distance = sqrt((posX - x1)*(posX - x1) + (posY - y1)*(posY - y1));
+  distance = sqrt((posX - x)*(posX - x) + (posY - y)*(posY - y));
   return distance;
 }
 
@@ -65,7 +63,7 @@ void draw(){
   text(b, 0, 40);
   text(x, 0, 60);
   text(y, 0, 80);
-  text(kyori(posX, posY), 0, 100);
+  text(kyori(x, y, posX, posY), 0, 100);
   
   line(x, y, posX, posY);
 }
