@@ -10,11 +10,12 @@
 class System{
 private:
 	Texture system_image;
+	Object Start[5];
 
 public:
 	System();
 
 	void draw();
-	void update();
+	void update(AppEnv&);
 
 };

@@ -16,6 +16,8 @@ int main() {
 		if (!app_env.isOpen()) return 0;
 		app_env.bgColor(color256(150, 150, 150));
 
+		system.update(app_env);
+
 		app_env.setupDraw();
 
 		system.draw();
