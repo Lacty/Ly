@@ -6,34 +6,30 @@
 
 class StageSelect : public cocos2d::Layer{
 private:
-    /* 画像用変数
+    /* 画像用変数は
        initの中で宣言している
        一つの画像を複数回呼ぶ場合initでその回数分読み込むべし */
 
-    /*
-        どのステージに進むか用の変数
-    */
     int STAGE_NUMBER;
 
-    //「Stage」文字用
     _Object _Stage[5];
-
-    // 数字用
     _Object _Number;
     cocos2d::Sprite* num_image;
-    int cut_texture;             // 画像切り取り用
+    
+    /* TODO:変数名の変更
+            処理の内容が理解しにくい */
+    // 画像切り取り用
+    int cut_texture;
 
-    // 矢印用
     _Object _Arrow[2];
     cocos2d::Sprite* upside_arrow_image;
     cocos2d::Sprite* downside_arrow_image;
-
 
     cocos2d::Size winSize;
     cocos2d::LayerColor* _bg;
 
     bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
-    int sgin;                    // 符号反転用
+    int  sgin;
     cocos2d::Point touchPoint;
 
 public:

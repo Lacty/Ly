@@ -99,20 +99,24 @@ bool StageSelect::init(){
         _Stage[i].point = Point(_Stage[i].size.width / 2 + (_Stage[i].size.width / 2 * i),
                                 (winSize.height / 2 - _Stage[i].size.height / 2) + (_Stage[i].size.height / 2 * i));
     }
+    /*
+        ‰æ‘œ‚ÌØ‚èæ‚èˆÊ’u‚ğw’è
+        ‰æ‘œ‚Ì‰ñ“]Šp“x‚ğw’è
+    */
     _Stage[0].tx_point = Point(0, 0);
-    _Stage[0].angle = -40;
+    _Stage[0].angle    = -40;
 
     _Stage[1].tx_point = Point(100, 0);
-    _Stage[1].angle = -40;
+    _Stage[1].angle    = -40;
 
     _Stage[2].tx_point = Point(200, 0);
-    _Stage[2].angle = -40;
+    _Stage[2].angle    = -40;
 
     _Stage[3].tx_point = Point(0, 200);
-    _Stage[3].angle = -40;
+    _Stage[3].angle    = -40;
 
     _Stage[4].tx_point = Point(100, 200);
-    _Stage[4].angle = -40;
+    _Stage[4].angle    = -40;
     
     // •`‰æ
     for (int i = 0; i < 5; i++){
@@ -157,29 +161,27 @@ bool StageSelect::init(){
     _Arrow[1].point = Point(0, -50);
     _Arrow[0].tx_point = Point(200, 300);
     _Arrow[1].tx_point = Point(0, 300);
+    // ‰æ‘œ‚ª•Ï‚ÉŒ©‚¦‚½‚©‚çA­‚µ‚¾‚¯ŒX‚¯‚Ä‚¨‚­
     _Arrow[1].angle = 3;
 
+    /* ã‚Ì–îˆó‚Ì•`‰æ */
     upside_arrow_image = Sprite::create("system_image.png");
-    downside_arrow_image = Sprite::create("system_image.png");
-
     upside_arrow_image->setPosition(_Arrow[0].point);
-    downside_arrow_image->setPosition(_Arrow[1].point);
-
     upside_arrow_image->setTextureRect(Rect(_Arrow[0].tx_point.x, _Arrow[0].tx_point.y,
                                             _Arrow[0].tx_size.width, _Arrow[0].tx_size.height));
+    upside_arrow_image->setScale(_Arrow[0].scale);
+    upside_arrow_image->setRotation(_Arrow[0].angle);
+    upside_arrow_image->setAnchorPoint(Point(0, 0));
+    this->addChild(upside_arrow_image);
+    
+    /* ‰º‚Ì–îˆó‚Ì•`‰æ */
+    downside_arrow_image = Sprite::create("system_image.png");
+    downside_arrow_image->setPosition(_Arrow[1].point);
     downside_arrow_image->setTextureRect(Rect(_Arrow[1].tx_point.x, _Arrow[1].tx_point.y,
                                               _Arrow[1].tx_size.width, _Arrow[1].tx_size.height));
-
-    upside_arrow_image->setScale(_Arrow[0].scale);
     downside_arrow_image->setScale(_Arrow[1].scale);
-
-    upside_arrow_image->setRotation(_Arrow[0].angle);
     downside_arrow_image->setRotation(_Arrow[1].angle);
-
-    upside_arrow_image->setAnchorPoint(Point(0, 0));
     downside_arrow_image->setAnchorPoint(Point(0, 0));
-
-    this->addChild(upside_arrow_image);
     this->addChild(downside_arrow_image);
 
     return true;
@@ -214,6 +216,7 @@ bool StageSelect::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event){
         }break;
         }
     }
+
     //Director::getInstance()->replaceScene(Title::createScene());
     return true;
 }

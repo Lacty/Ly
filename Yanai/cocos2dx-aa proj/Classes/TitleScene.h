@@ -22,7 +22,8 @@ private:
     cocos2d::LayerColor *_bg;
 
     bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
-    int sgin; // •„†”½“]—p
+    // •„†”½“]—p
+    int  sgin;
     cocos2d::Point touchPoint;
 
 public:

@@ -8,7 +8,7 @@
 #include "cocos2d.h"
 
 struct _Object{
-    bool active; // 生きているかどうか
+    bool active;             // 生きているかどうか
 
     cocos2d::Point point;    // 位置
     cocos2d::Size  size;     // サイズ
@@ -18,9 +18,9 @@ struct _Object{
     float scale;             // 拡大比率
 
     cocos2d::Color3B col;
-    int visi;                // 透過度(0~255)
+    int   visi;              // 透過度(0~255)"0"で透明
 
-    bool rigth;              // 右を向いているかどうか
+    bool  right;             // 右を向いているかどうか
     
     float g, vy;             // 重力、加速度
 

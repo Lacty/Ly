@@ -142,7 +142,7 @@ bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event){
     // タッチしたときSTARTの中であれば
     // ステージ選択へ移行
     if (point_to_rect(touchPoint.x, touchPoint.y, START.point.x, START.point.y,
-        START.size.width, START.size.height)){
+                      START.size.width, START.size.height)){
         Director::getInstance()->replaceScene(StageSelect::createScene());
     }
 
@@ -150,8 +150,8 @@ bool Title::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event){
 }
 
 void Title::update(float delta){
-    START.angle+=0.08;
-    EXIT.angle+=0.1;
+    START.angle += 0.08;
+    EXIT.angle  += 0.1;
     start_image->setPosition(Point(START.point.x, sin(START.angle)*5+START.point.y));
     exit_image->setPosition(Point(EXIT.point.x, sin(EXIT.angle)*4+EXIT.point.y));
 }
