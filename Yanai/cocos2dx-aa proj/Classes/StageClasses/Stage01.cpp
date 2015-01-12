@@ -10,7 +10,10 @@ Scene* Stage01::createScene()
 {
     auto scene = Scene::create();
     auto layer = Stage01::create();
+    //auto layer2 = PlayerOwata::create();
+    //*owata = *layer2;
     scene->addChild(layer);
+    //scene->addChild(layer2);
     return scene;
 }
 
@@ -24,31 +27,11 @@ Stage01::Stage01(){
     _bg = LayerColor::create(Color4B::GRAY, winSize.width, winSize.height);
     this->addChild(_bg);
 
-    /*
-    // _Owataをとりあえず初期化
-    _Owata = { true,
-               Point(0, 0), Size(0, 0),
-               Point(0, 0), Size(200, 100),
-               1,
-               Color3B::WHITE, 255,
-               true,
-               0, 0, 0, 3 };
-
-    // _Shotsをとりあえず初期化
-    for (int i = 2; i < 2; i++){
-        _Shots[i] = { true,
-                      Point(0, 0), Size(0, 0),
-                      Point(0, 0), Size(0, 0),
-                      1,
-                      Color3B::WHITE, 255,
-                      true,
-                      0, 0, 0, 0 };
-    }
-    */
-
 
     // なんとなくクリエイトしてみる
     owata = PlayerOwata::create();
+    //owata.create();
+    owa = false;
 }
 
 
@@ -80,20 +63,23 @@ bool Stage01::init(){
     // 問題はpause画面が作成できるかどうか
 
     /*
-    // オワタの描画
-    owata_image = Sprite::create("player_image.png");
-    // ステータスの初期化
-    owata_image->setPosition(_Owata.point);
-    owata_image->setTextureRect(Rect(_Owata.tx_point.x, _Owata.tx_point.y,
-                                     _Owata.tx_size.width, _Owata.tx_size.height));
-    owata_image->setScale(_Owata.scale);
-    owata_image->setAnchorPoint(Point(0, 0));
-    this->addChild(owata_image);
+    Rect rect1 = Rect(0, 0, 60, 60);
 
-    // 実際に描画されている画像のサイズを取得
-    _Owata.size = Size(_Owata.tx_size.width  * _Owata.scale,
-                       _Owata.tx_size.height * _Owata.scale);
+    auto sprite1 = Sprite::create();
+    sprite1->setTextureRect(rect1);
+    sprite1->setColor(Color3B::WHITE);
+    sprite1->setPosition(winSize.width/2, winSize.height/2);
+    this->addChild(sprite1);
+
+    auto sprite2 = getTag();
     */
+
+    /*
+    // この2行でPlayerOwataクラスを呼ぶことができるらしい
+    auto playerLayer = PlayerOwata::create();
+    addChild(playerLayer);
+    */
+
 
     return true;
 }
@@ -106,20 +92,7 @@ void Stage01::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2
         auto location = touch->getLocation();
 
         log("location.x=%f, location.y=%f", location.x, location.y);
-        /*
-        if (point_to_rect(location.x, location.y, 0, 0, winSize.width / 4, winSize.height)){
-            //_Owata.point.x -= _Owata.speed;
-            isPushRight  = false;
-            isPushLeft   = true;
-            _Owata.right = false;
-        }
-        if (point_to_rect(location.x, location.y, winSize.width / 4, 0, winSize.width / 4, winSize.height)){
-            //_Owata.point.x += _Owata.speed;
-            isPushRight  = true;
-            isPushLeft   = false;
-            _Owata.right = true;
-        }
-        */
+
         iterator++;
     }
     return;
@@ -131,25 +104,6 @@ void Stage01::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2
     while (iterator != touches.end()) {
         Touch* touch  = (Touch*)(*iterator);
         auto location = touch->getLocation();
-
-        /*
-        if (point_to_rect(location.x, location.y, 0, 0, winSize.width / 4, winSize.height)){
-            //_Owata.point.x -= _Owata.speed;
-            isPushRight  = false;
-            isPushLeft   = true;
-            _Owata.right = false;
-        }
-        if (point_to_rect(location.x, location.y, winSize.width / 4, 0, winSize.width / 4, winSize.height)){
-            //_Owata.point.x += _Owata.speed;
-            isPushRight  = true;
-            isPushLeft   = false;
-            _Owata.right = true;
-        }
-        if (point_to_rect(location.x, location.y, winSize.width / 2, 0, winSize.width/4, winSize.height)){
-            isPushRight  = false;
-            isPushLeft   = false;
-        }
-        */
 
         iterator++;
     }
@@ -163,61 +117,13 @@ void Stage01::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2
         Touch* touch  = (Touch*)(*iterator);
         auto location = touch->getLocation();
 
-        /*
-        if (point_to_rect(location.x, location.y, 0, 0, winSize.width / 2, winSize.height)){
-            isPushRight = false;
-            isPushLeft  = false;
-        }
-        */
-
+        owa = false;
         iterator++;
     }
     return;
 }
 
-/*
-// オワタの移動制御
-void Stage01::owataMove(){
-    // 画面外に出ないように移動制御
-    if (_Owata.point.x < 0){
-        isPushLeft  = false;
-    }
-    if ((_Owata.point.x + _Owata.size.width) > winSize.width){
-        isPushRight = false;
-    }
-
-    // 押されている方向に移動させる
-    if (isPushRight){
-        _Owata.point.x += _Owata.speed;
-    }
-    if (isPushLeft){
-        _Owata.point.x -= _Owata.speed;
-    }
-
-    // オワタの位置を反映させる
-    owata_image->setPosition(_Owata.point);
-}
-
-// オワタの画像切り替え
-void Stage01::owataSetTextureRect(){
-
-    if (_Owata.right){
-        _Owata.tx_point = Point(0, 0);
-    } else{
-        _Owata.tx_point = Point(200, 0);
-    }
-
-    // 切り替えた画像の切り出し位置を反映させる
-    owata_image->setTextureRect(Rect(_Owata.tx_point.x, _Owata.tx_point.y,
-                                     _Owata.tx_size.width, _Owata.tx_size.height));
-}
-*/
-
 
 void Stage01::update(float delta){
-    /*
-    // 関数呼び出し
-    owataMove();
-    owataSetTextureRect();
-    */
+    log("shot.x = %f", owata->_Shots[0].point.x);
 }

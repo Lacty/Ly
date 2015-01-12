@@ -36,11 +36,11 @@ public:
     StageSelect();
 
     static cocos2d::Scene* createScene();
-    virtual bool init();         // •`‰æ•”•ª
+    bool init();         // •`‰æ•”•ª
     CREATE_FUNC(StageSelect);
 
     // –ˆƒ‹[ƒvs‚í‚ê‚éˆ—•”•ª
-    virtual void update(float delta);
+    void update(float delta);
 };
 
 #endif // __Stage_Select_SCENE_H__
