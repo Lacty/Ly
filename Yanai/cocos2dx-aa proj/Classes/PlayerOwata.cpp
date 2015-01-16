@@ -205,9 +205,10 @@ void PlayerOwata::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, co
 
 
         /* 
-            画面右端をタップしたときの処理
+            ShotButtonをタップしたときの処理
+            縦方向にあたり判定を伸ばしておく
         */
-        if (point_to_rect(location.x, location.y, winSize.width - _ShotButton.size.width, 0, _ShotButton.size.width, winSize.height)){
+        if (point_to_rect(location.x, location.y, winSize.width - _ShotButton.size.width, 0, _ShotButton.size.width, _ShotButton.size.height*2)){
             // ShotButtonをタッチしたと判定
             isTouchShotButton = true;
             _ShotButton.active = true;
@@ -244,10 +245,10 @@ void PlayerOwata::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, co
         }
 
         /*
-        画面右端をタップしたときの処理
+            ShotButtonをタップしたときの処理
         */
-        if (point_to_rect(location.x, location.y, winSize.width - _ShotButton.size.width, 0, _ShotButton.size.width, winSize.height)){
-            // ShotButtonを押しづつけても無駄だよぉという処理
+        if (point_to_rect(location.x, location.y, winSize.width - _ShotButton.size.width, 0, _ShotButton.size.width, _ShotButton.size.height*2)){
+            // タップし続けている間は弾が発射されないようにfalseにしておく
             isTouchShotButton = false;
         }
 
@@ -271,7 +272,7 @@ void PlayerOwata::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
         }
 
         // Shot
-        if (point_to_rect(location.x, location.y, winSize.width - _ShotButton.size.width, 0, _ShotButton.size.width, winSize.height)){
+        if (point_to_rect(location.x, location.y, winSize.width - _ShotButton.size.width, 0, _ShotButton.size.width, _ShotButton.size.height*2)){
             // ShotButtonから指を離した時
             isTouchShotButton = false;
         }
@@ -301,7 +302,10 @@ void PlayerOwata::owataMove(){
     }
 
     // オワタの位置を反映させる
-    owata_image->setPosition(_Owata.point);
+    // 各ステージの更新処理の最後に置くことで
+    // 変な描画をなくす
+    // 例：ブロックにのめり込みなど
+    // owata_image->setPosition(_Owata.point);
 }
 
 // オワタの画像切り替え
@@ -311,7 +315,7 @@ void PlayerOwata::owataSetTextureRect(){
         _Owata.tx_point = Point(0, 0);
     }
     else{
-        _Owata.tx_point = Point(200, 0);
+        _Owata.tx_point = Point(600, 0);
     }
 
     // 切り替えた画像の切り出し位置を反映させる
@@ -436,6 +440,14 @@ void PlayerOwata::setButtonColor(){
         _ShotButton.col = Color3B::WHITE;
     }
 
+    // pause画面中の色を決定
+    if (pause){
+        for (int i = 0; i < 2; i++){
+            _Button[i].col = Color3B::WHITE;
+        }
+        _ShotButton.col = Color3B::WHITE;
+    }
+
     // 変更した色を反映させる
     for (int i = 0; i < BUTTON_MAX; i++){
         button_image[i]->setColor(_Button[i].col);
@@ -451,7 +463,6 @@ void PlayerOwata::update(float delta){
         owataMove();
         owataSetTextureRect();
         owataShot();
-        setButtonColor();
     }
-
+    setButtonColor();
 }

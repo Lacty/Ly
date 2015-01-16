@@ -7,9 +7,6 @@
 class PlayerOwata : public cocos2d::Layer{
 private:
     //------プレイヤーのステータス関係------//
-    cocos2d::Sprite* owata_image;
-    bool isPushRight;
-    bool isPushLeft;
     void owataMove();
     void owataSetTextureRect();
 
@@ -60,6 +57,11 @@ public:
     // 他で触れるように構造体をpublicに置く
     _Object _Owata;
     _Object _Shots[SHOT_MAX];
+
+    // プレイヤーの画像&移動ボタンの制御もPublicに置く
+    cocos2d::Sprite* owata_image;
+    bool isPushRight;
+    bool isPushLeft;
 
     // pause画面用変数
     bool pause;
