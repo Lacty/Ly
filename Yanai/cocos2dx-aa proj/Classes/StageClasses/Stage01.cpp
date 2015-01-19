@@ -28,7 +28,7 @@ Stage01::Stage01(){
     _bg = LayerColor::create(Color4B::GRAY, winSize.width, winSize.height);
     this->addChild(_bg);
 
-    // クリエイト
+    // owataのクリエイト
     owata = PlayerOwata::create();
 
     // 床の始点と終点を決定する
