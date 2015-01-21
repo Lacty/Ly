@@ -27,27 +27,51 @@ private:
 
     //---------矢印ブロック---------//
     enum {
-        BLOCK_MAX = 5
+        BLOCK_MAX = 2
     };
     _Object _Block[BLOCK_MAX];
     cocos2d::Sprite* block_image[BLOCK_MAX];
-    // 弾がブロックに当たったときの処理と言いたい
-    void BlockTrigger();
-    void BlockMove();
-    void BlockColor();
-    // プレイヤーがブロックにめり込まないように処理
-    void BlockToPlayer();
 
     //---------ワープブロック---------//
     enum {
-        WARP_MAX = 4
+        WARP_MAX = 4,
+        A = 0,
+        B = 1,
+        C = 2,
+        D = 3
     };
-    _Object _Warp_Block[WARP_MAX];
+    _Object _WarpBlock[WARP_MAX];
+    cocos2d::Sprite* warp_image[WARP_MAX];
+    cocos2d::Sprite* abcd_image[WARP_MAX];
+    void WarpTrigger();
+
+    //----------上下するブロック----------//
+    enum {
+        MOVING_BLOCK_MAX = 2
+    };
+    _Object _MovingBlock[MOVING_BLOCK_MAX];
+    cocos2d::Sprite* moving_block_image[MOVING_BLOCK_MAX];
+
+    //------------的-------------//
+    _Object _Target;
+    cocos2d::Sprite* target_image;
+
+
+    //---------各ブロックのあたり判定など---------//
+    void BlockTrigger();
+    void BlockMove();
+    void BlockColor();
+    // プレイヤーとブロックのあたり判定
+    void BlockToPlayer();
 
     //-----------ゴール-----------//
     _Object _Goal;
     cocos2d::Sprite* goal_image;
     void GoalScene();
+
+    //--------ちょｗｗｗｗ-------//
+    // Goal後の演出・owataにコメント
+    cocos2d::Sprite* comment_image;
 
     //---------プレイヤーの更新処理---------//
     void PlayerUpdate();

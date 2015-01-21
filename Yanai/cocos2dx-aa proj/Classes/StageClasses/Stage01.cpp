@@ -312,6 +312,10 @@ void Stage01::GoalScene(){
 
         // 樹海(Goal)をアクティブにする
         _Goal.active = true;
+        // 生きている弾を消滅させる
+        for (int i = 0; i < 2; i++){
+            owata->gun_image[i]->setOpacity(0);
+        }
     }
 
     // 樹海の演出
@@ -321,7 +325,6 @@ void Stage01::GoalScene(){
 
         _Goal.tx_point = Point(0, 400);  // 画像の切り取り位置を変更
         _Goal.point.x += _Goal.speed;    // Goal画像の移動
-
 
         if (_Goal.point.x >= winSize.width){
             owata->_Owata.point.x += owata->_Owata.speed;

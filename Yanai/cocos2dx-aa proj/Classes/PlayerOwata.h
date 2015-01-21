@@ -16,7 +16,6 @@ private:
         SHOT_MAX = 2
     };
     void owataShot();
-    cocos2d::Sprite* gun_image[SHOT_MAX];
     _Object _ShotButton;
     cocos2d::Sprite* shot_button_image;
 
@@ -60,6 +59,7 @@ public:
 
     // プレイヤーの画像&移動ボタンの制御もPublicに置く
     cocos2d::Sprite* owata_image;
+    cocos2d::Sprite* gun_image[SHOT_MAX];
     bool isPushRight;
     bool isPushLeft;
 

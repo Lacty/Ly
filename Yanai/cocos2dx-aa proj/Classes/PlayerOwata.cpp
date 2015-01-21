@@ -39,7 +39,7 @@ PlayerOwata::PlayerOwata(){
             1,
             Color3B::WHITE, 255,
             true,
-            0, 0, 0, 16
+            0, 0, 0, 20
         };
     }
 

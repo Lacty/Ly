@@ -3,6 +3,7 @@
 #include "TitleScene.h"
 #include "StageClasses/Stage01.h"
 #include "StageClasses/Stage02.h"
+#include "StageClasses/Stage03.h"
 #include "isHit.h"
 
 USING_NS_CC;
@@ -208,7 +209,7 @@ bool StageSelect::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event){
         }
     }
 
-    // シーン移行
+    //--------------シーン移行--------------//
     if (point_to_rect(touchPoint.x, touchPoint.y,
                       _Number.point.x, _Number.point.y, _Number.size.width, _Number.size.height)){
         switch (STAGE_NUMBER){
@@ -218,6 +219,10 @@ bool StageSelect::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event){
 
         case 2:{
             Director::getInstance()->replaceScene(Stage02::createScene());
+        }break;
+
+        case 3:{
+            Director::getInstance()->replaceScene(Stage03::createScene());
         }break;
         }
     }
