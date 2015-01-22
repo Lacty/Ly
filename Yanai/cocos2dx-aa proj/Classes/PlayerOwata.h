@@ -9,6 +9,8 @@ private:
     //------プレイヤーのステータス関係------//
     void owataMove();
     void owataSetTextureRect();
+    void owataDead();
+    cocos2d::Sprite* dead_image;
 
     //------------弾関係------------//
     enum{
@@ -62,6 +64,12 @@ public:
     cocos2d::Sprite* gun_image[SHOT_MAX];
     bool isPushRight;
     bool isPushLeft;
+    // ティうんてぃうんの画像切り取り位置用
+    _Object _Dead;
+    int deadTexture_x;
+
+    // プレイヤーの表示,非表示
+    void visiblePlayer();
 
     // pause画面用変数
     bool pause;

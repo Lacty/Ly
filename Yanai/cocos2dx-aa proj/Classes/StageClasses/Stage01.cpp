@@ -73,7 +73,7 @@ Stage01::Stage01(){
     // _Pause‚ğ‚Æ‚è‚ ‚¦‚¸‰Šú‰»
     _Pause = { false,
         Point(0, 0), Size(0, 0),
-        Point(0, 500), Size(200, 200),
+        Point(200, 500), Size(200, 200),
         1,
         Color3B::WHITE, 0,
         true,

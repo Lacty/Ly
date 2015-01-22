@@ -26,7 +26,7 @@ PlayerOwata::PlayerOwata(){
         Point(0, winSize.height/4), Size(0, 0),
         Point(0, 0), Size(200, 100),
         1,
-        Color3B::WHITE, 255,
+        Color3B::WHITE, 1,
         true,
         0, 0, 0, 3
     };
@@ -64,6 +64,16 @@ PlayerOwata::PlayerOwata(){
             0, 0, 0, 0
         };
     }
+
+    // _Deadの初期化
+    _Dead = { false,
+        Point(0, 0), Size(0, 0),
+        Point(0, 200), Size(200, 200),
+        1.5,
+        Color3B::WHITE, 0,
+        true,
+        0, 0, 0, 0
+    };
 
     isPushLeft  = false;
     isPushRight = false;
@@ -173,6 +183,14 @@ bool PlayerOwata::init(){
         button_image[i]->setScale(_Button[i].scale);
         this->addChild(button_image[i]);
     }
+
+    //--------Dead--------//
+    dead_image = Sprite::create("player_image.png");
+    dead_image->setPosition(_Dead.point);
+    dead_image->setTextureRect(Rect(_Dead.tx_point.x, _Dead.tx_point.y, _Dead.tx_size.width, _Dead.tx_size.height));
+    dead_image->setScale(_Dead.scale);
+    dead_image->setVisible(_Dead.visi);
+    this->addChild(dead_image);
 
     return true;
 }
@@ -386,6 +404,7 @@ void PlayerOwata::owataShot(){
             _Shots[i].visi = 1; /* true */
         } else{
             _Shots[i].visi = 0; /* false */
+            _Shots[i].point = Point(0, 0);
         }
     }
 
@@ -408,6 +427,38 @@ void PlayerOwata::owataShot(){
         gun_image[i]->setVisible(_Shots[i].visi);
     }
 
+}
+
+
+void PlayerOwata::owataDead(){
+    if (!_Owata.active){
+        // オワタが死んだら操作不能にする
+        pause = true;
+        _Dead.visi = 255;
+        _Dead.active = true;
+    }
+    
+    if (_Dead.active){
+        _Dead.angle++;
+        if ((_Dead.angle >= 0) && (_Dead.angle <= 30)){
+            deadTexture_x = 0;
+        } else if ((_Dead.angle >= 31) && (_Dead.angle <= 60)){
+            deadTexture_x = 200;
+        } else if ((_Dead.angle >= 61) && (_Dead.angle <= 90)){
+            deadTexture_x = 400;
+        }
+        dead_image->setTextureRect(Rect(deadTexture_x, _Dead.tx_point.y, _Dead.tx_size.width, _Dead.tx_size.height));
+    }
+
+    dead_image->setPosition(Point(_Owata.point.x + _Owata.size.width / 2, _Owata.point.y));
+    dead_image->setVisible(_Dead.visi); //透過度
+}
+
+void PlayerOwata::visiblePlayer(){
+    if (!_Owata.active){
+        _Owata.visi = 0;
+    }
+    owata_image->setVisible(_Owata.visi); //透過度
 }
 
 
@@ -464,5 +515,7 @@ void PlayerOwata::update(float delta){
         owataSetTextureRect();
         owataShot();
     }
+    visiblePlayer();
     setButtonColor();
+    owataDead();
 }
