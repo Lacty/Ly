@@ -16,8 +16,6 @@ private:
     _Object _Number;
     cocos2d::Sprite* num_image;
     
-    /* TODO:•Ï”–¼‚Ì•ÏX
-            ˆ—‚Ì“à—e‚ª—‰ğ‚µ‚É‚­‚¢ */
     // ‰æ‘œØ‚èæ‚è—p
     int cut_texture;
 

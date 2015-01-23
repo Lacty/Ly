@@ -4,6 +4,7 @@
 #include "StageClasses/Stage01.h"
 #include "StageClasses/Stage02.h"
 #include "StageClasses/Stage03.h"
+#include "StageClasses/Stage04.h"
 #include "isHit.h"
 
 USING_NS_CC;
@@ -223,6 +224,10 @@ bool StageSelect::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event){
 
         case 3:{
             Director::getInstance()->replaceScene(Stage03::createScene());
+        }break;
+
+        case 4:{
+            Director::getInstance()->replaceScene(Stage04::creteScene());
         }break;
         }
     }

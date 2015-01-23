@@ -442,10 +442,11 @@ void Stage03::SignBoard(){
         // ボタンを踏んだらactiveにする
         _SignBoard.active = true;
     }
-
-    if (_SignBoard.active){
-        // 看板の移動
-        _SignBoard.point.x += _SignBoard.speed;
+    if (!_Pause.active){
+        if (_SignBoard.active){
+            // 看板の移動
+            _SignBoard.point.x += _SignBoard.speed;
+        }
     }
 
     // ワープポイントとプレイヤーのあたり判定
