@@ -16,6 +16,7 @@ private:
     bool isTouchBegan;
     bool isTouchMoved;
     bool isTouchEnded;
+    bool isInit;
 
     // タッチした位置と離した位置を保存
     cocos2d::Point firstTouchPoint;
@@ -23,7 +24,8 @@ private:
 
     // タッチしている間のタイムを保存
     void TouchingTimeCount();
-    float timeCount = 0;
+    float timeTouchCount;
+    float timeCount;
 
     // タッチした位置と話した位置の距離を保存
     void DistTouchBeganToEnded();
@@ -33,15 +35,20 @@ private:
     //---------(:3=---------//
     cocos2d::Sprite* player_image;
     _Object _Player;
-    void PlayerMove();
+    void PlayerScene();
+    void PlayerUpdate();
 
     //--------布団---------//
     enum{
-        HUTON_MAX = 20
+        HUTON_MAX = 30
     };
     cocos2d::Sprite* huton_image[HUTON_MAX];
     _Object _Huton[HUTON_MAX];
     void HutonScene();
+    void HutonUpdate();
+    void HutonTrigger();
+    bool hutonTrigger1;
+    bool hutonTrigger2;
 
 public:
     Stage04();
