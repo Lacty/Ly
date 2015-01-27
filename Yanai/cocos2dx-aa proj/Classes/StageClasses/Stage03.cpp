@@ -218,7 +218,7 @@ bool Stage03::init(){
     _SignBoard.size = Size(_SignBoard.tx_size.width * _SignBoard.scale,
                            _SignBoard.tx_size.height * _SignBoard.scale);
     // •`‰æˆÊ’u‚ðŒˆ’è
-    _SignBoard.point = Point(-_SignBoard.size.width, floorStartingPoint[0].y);
+    _SignBoard.point = Point(-_SignBoard.size.width/3*4, floorStartingPoint[0].y);
 
     signboard_image = Sprite::create("stage01_image.png");
     signboard_image->setPosition(_SignBoard.point);

@@ -227,7 +227,7 @@ bool StageSelect::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event){
         }break;
 
         case 4:{
-            Director::getInstance()->replaceScene(Stage04::creteScene());
+            Director::getInstance()->replaceScene(Stage04::createScene());
         }break;
         }
     }
